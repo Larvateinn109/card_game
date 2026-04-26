@@ -54,7 +54,9 @@
       "normalAttack",
       "skill2",
       "normalAttack"
-    ]
+    ],
+    "battleImage": "images/yuki_battle_test.png",
+    "iconImage": "images/yuki_icon_test.png"
   },
   {
     "id": "kamome_ur_001",
