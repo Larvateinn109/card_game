@@ -1,3 +1,366 @@
+const EMBEDDED_CARDS = [
+  {
+    "id": "yuki_lr_001",
+    "name": "水上 由岐",
+    "nameEn": "Minakami Yuki",
+    "series": "素晴らしき日々",
+    "rarity": "LR",
+    "rarityLabel": "LEGEND RARE",
+    "attribute": "記憶",
+    "position": "front",
+    "cardImage": "",
+    "iconImage": "",
+    "battleImage": "",
+    "baseHp": 5200,
+    "baseAtk": 980,
+    "baseDef": 420,
+    "baseSpd": 720,
+    "baseLuck": 430,
+    "growHp": 280,
+    "growAtk": 64,
+    "growDef": 28,
+    "growSpd": 34,
+    "growLuck": 20,
+    "dupeBonusRate": 0.035,
+    "normalAttack": {
+      "name": "通常攻撃",
+      "type": "attack",
+      "target": "front_enemy",
+      "power": 1.0,
+      "tpGain": 12,
+      "duration": 950,
+      "motion": "punch"
+    },
+    "skill1": {
+      "name": "踏み込み掌打",
+      "type": "attack",
+      "target": "front_enemy",
+      "power": 1.65,
+      "tpGain": 18,
+      "duration": 1350,
+      "motion": "dashPunch",
+      "effects": [
+        {
+          "type": "stun",
+          "chance": 0.25,
+          "duration": 1000
+        }
+      ]
+    },
+    "skill2": {
+      "name": "旋風蹴り",
+      "type": "attack",
+      "target": "enemy_area",
+      "power": 1.25,
+      "tpGain": 20,
+      "duration": 1550,
+      "motion": "kick",
+      "effects": [
+        {
+          "type": "def_down",
+          "value": 0.15,
+          "duration": 6000
+        }
+      ]
+    },
+    "ultimate": {
+      "name": "終ノ空・崩拳連撃",
+      "type": "attack",
+      "target": "enemy_all",
+      "power": 2.8,
+      "tpCost": 100,
+      "duration": 2600,
+      "motion": "ultimate",
+      "effects": [
+        {
+          "type": "atk_up",
+          "target": "self",
+          "value": 0.2,
+          "duration": 8000
+        }
+      ]
+    },
+    "actionLoop": [
+      "normalAttack",
+      "skill1",
+      "normalAttack",
+      "skill2",
+      "normalAttack"
+    ]
+  },
+  {
+    "id": "kamome_ur_001",
+    "name": "久島 鴎",
+    "nameEn": "Kushima Kamome",
+    "series": "Summer Pockets",
+    "rarity": "UR",
+    "rarityLabel": "ULTIMATE RARE",
+    "attribute": "空",
+    "position": "middle",
+    "cardImage": "",
+    "iconImage": "",
+    "battleImage": "",
+    "baseHp": 4300,
+    "baseAtk": 820,
+    "baseDef": 380,
+    "baseSpd": 760,
+    "baseLuck": 620,
+    "growHp": 230,
+    "growAtk": 52,
+    "growDef": 24,
+    "growSpd": 38,
+    "growLuck": 30,
+    "dupeBonusRate": 0.03,
+    "normalAttack": {
+      "name": "通常攻撃",
+      "type": "attack",
+      "target": "front_enemy",
+      "power": 1.0,
+      "tpGain": 12,
+      "duration": 950,
+      "motion": "shoot"
+    },
+    "skill1": {
+      "name": "リーフストーン",
+      "type": "attack",
+      "target": "front_enemy",
+      "power": 1.45,
+      "tpGain": 18,
+      "duration": 1300,
+      "motion": "cast"
+    },
+    "skill2": {
+      "name": "夏風の加護",
+      "type": "buff",
+      "target": "ally_all",
+      "stat": "spd",
+      "value": 0.18,
+      "duration": 1350,
+      "tpGain": 20,
+      "motion": "buff"
+    },
+    "ultimate": {
+      "name": "静寂の羽ばたき・極",
+      "type": "attack",
+      "target": "enemy_all",
+      "power": 2.35,
+      "tpCost": 100,
+      "duration": 2500,
+      "motion": "ultimate"
+    },
+    "actionLoop": [
+      "normalAttack",
+      "skill1",
+      "normalAttack",
+      "skill2",
+      "normalAttack"
+    ]
+  },
+  {
+    "id": "front_r_001",
+    "name": "前衛アタッカー",
+    "nameEn": "Front Attacker",
+    "series": "Original",
+    "rarity": "SR",
+    "rarityLabel": "SUPER RARE",
+    "attribute": "火",
+    "position": "front",
+    "cardImage": "",
+    "iconImage": "",
+    "battleImage": "",
+    "baseHp": 3900,
+    "baseAtk": 720,
+    "baseDef": 360,
+    "baseSpd": 640,
+    "baseLuck": 300,
+    "growHp": 200,
+    "growAtk": 42,
+    "growDef": 20,
+    "growSpd": 26,
+    "growLuck": 14,
+    "dupeBonusRate": 0.025,
+    "normalAttack": {
+      "name": "通常攻撃",
+      "type": "attack",
+      "target": "front_enemy",
+      "power": 1.0,
+      "tpGain": 12,
+      "duration": 950,
+      "motion": "punch"
+    },
+    "skill1": {
+      "name": "強打",
+      "type": "attack",
+      "target": "front_enemy",
+      "power": 1.35,
+      "tpGain": 16,
+      "duration": 1250,
+      "motion": "dashPunch"
+    },
+    "skill2": {
+      "name": "気合",
+      "type": "buff",
+      "target": "self",
+      "stat": "atk",
+      "value": 0.18,
+      "duration": 1200,
+      "tpGain": 18,
+      "motion": "buff"
+    },
+    "ultimate": {
+      "name": "渾身連打",
+      "type": "attack",
+      "target": "front_enemy",
+      "power": 3.1,
+      "tpCost": 100,
+      "duration": 2400,
+      "motion": "ultimate"
+    },
+    "actionLoop": [
+      "normalAttack",
+      "skill1",
+      "normalAttack",
+      "skill2",
+      "normalAttack"
+    ]
+  },
+  {
+    "id": "healer_sr_001",
+    "name": "支援ヒーラー",
+    "nameEn": "Support Healer",
+    "series": "Original",
+    "rarity": "SR",
+    "rarityLabel": "SUPER RARE",
+    "attribute": "水",
+    "position": "back",
+    "cardImage": "",
+    "iconImage": "",
+    "battleImage": "",
+    "baseHp": 3400,
+    "baseAtk": 520,
+    "baseDef": 300,
+    "baseSpd": 600,
+    "baseLuck": 410,
+    "growHp": 170,
+    "growAtk": 28,
+    "growDef": 18,
+    "growSpd": 24,
+    "growLuck": 20,
+    "dupeBonusRate": 0.025,
+    "normalAttack": {
+      "name": "通常攻撃",
+      "type": "attack",
+      "target": "front_enemy",
+      "power": 0.85,
+      "tpGain": 12,
+      "duration": 950,
+      "motion": "shoot"
+    },
+    "skill1": {
+      "name": "応急手当",
+      "type": "heal",
+      "target": "lowest_ally",
+      "power": 1.3,
+      "tpGain": 18,
+      "duration": 1250,
+      "motion": "heal"
+    },
+    "skill2": {
+      "name": "防御支援",
+      "type": "buff",
+      "target": "ally_all",
+      "stat": "def",
+      "value": 0.16,
+      "duration": 1300,
+      "tpGain": 18,
+      "motion": "buff"
+    },
+    "ultimate": {
+      "name": "全体回復",
+      "type": "heal",
+      "target": "ally_all",
+      "power": 1.8,
+      "tpCost": 100,
+      "duration": 2400,
+      "motion": "ultimate"
+    },
+    "actionLoop": [
+      "normalAttack",
+      "skill1",
+      "normalAttack",
+      "skill2",
+      "normalAttack"
+    ]
+  },
+  {
+    "id": "mage_sr_001",
+    "name": "後衛メイジ",
+    "nameEn": "Back Mage",
+    "series": "Original",
+    "rarity": "SR",
+    "rarityLabel": "SUPER RARE",
+    "attribute": "星",
+    "position": "back",
+    "cardImage": "",
+    "iconImage": "",
+    "battleImage": "",
+    "baseHp": 3100,
+    "baseAtk": 840,
+    "baseDef": 260,
+    "baseSpd": 580,
+    "baseLuck": 520,
+    "growHp": 150,
+    "growAtk": 50,
+    "growDef": 14,
+    "growSpd": 22,
+    "growLuck": 24,
+    "dupeBonusRate": 0.025,
+    "normalAttack": {
+      "name": "通常攻撃",
+      "type": "attack",
+      "target": "front_enemy",
+      "power": 0.95,
+      "tpGain": 12,
+      "duration": 950,
+      "motion": "shoot"
+    },
+    "skill1": {
+      "name": "星弾",
+      "type": "attack",
+      "target": "front_enemy",
+      "power": 1.55,
+      "tpGain": 18,
+      "duration": 1300,
+      "motion": "cast"
+    },
+    "skill2": {
+      "name": "小爆発",
+      "type": "attack",
+      "target": "enemy_area",
+      "power": 1.15,
+      "tpGain": 20,
+      "duration": 1500,
+      "motion": "cast"
+    },
+    "ultimate": {
+      "name": "星降る夜",
+      "type": "attack",
+      "target": "enemy_all",
+      "power": 2.45,
+      "tpCost": 100,
+      "duration": 2600,
+      "motion": "ultimate"
+    },
+    "actionLoop": [
+      "normalAttack",
+      "skill1",
+      "normalAttack",
+      "skill2",
+      "normalAttack"
+    ]
+  }
+];
+
 const SAVE_KEY = "summer_card_battle_save_v1";
 const TICK_MS = 100;
 const FALLBACK_IMAGE = "images/card_back.svg";
@@ -25,13 +388,22 @@ function defaultSave() {
 }
 
 async function init() {
-  cards = await fetch("cards.json").then(r => r.json());
+  try {
+    const res = await fetch("cards.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("cards.json load failed: " + res.status);
+    cards = await res.json();
+  } catch (error) {
+    console.warn("cards.jsonを読み込めなかったため、内蔵カードデータで起動します。", error);
+    cards = EMBEDDED_CARDS;
+  }
+
   loadSave();
   bindEvents();
   renderHeader();
   renderCards();
   initBattle();
   navigate("homeScreen");
+  logBattle("準備完了。「開始」を押すと戦闘が始まります。");
 }
 
 function loadSave() {
@@ -234,14 +606,21 @@ function initBattle() {
 }
 
 function startBattle() {
+  if (!battle) {
+    initBattle();
+  }
   if (battle.running) {
     toast("すでに戦闘中です");
     return;
   }
+
   battle.running = true;
   battle.now = 0;
   document.getElementById("battleStateText").textContent = "戦闘中";
   logBattle("戦闘開始！");
+  renderBattle();
+
+  if (battleTimer) clearInterval(battleTimer);
   battleTimer = setInterval(tickBattle, TICK_MS);
 }
 
@@ -522,6 +901,7 @@ function checkBattleEnd() {
 }
 
 function renderBattle() {
+  if (!battle) return;
   renderUnitLine("allyLine", battle.allies);
   renderUnitLine("enemyLine", battle.enemies);
   renderUltimateIcons();
