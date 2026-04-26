@@ -411,3 +411,48 @@ button:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.28)}
     height:100px;
   }
 }
+
+
+/* v1.6.2 sprite stabilize */
+.sheetSprite{
+  width:112px !important;
+  height:112px !important;
+  background-repeat:no-repeat !important;
+  background-color:transparent !important;
+  image-rendering:auto !important;
+  transform-origin:center bottom;
+  will-change:background-position, transform;
+}
+.sheetUnit .sprite{
+  width:112px !important;
+  height:112px !important;
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  overflow:visible !important;
+  animation:none !important;
+}
+.sheetUnit .sdSpriteWrap{
+  width:112px !important;
+  height:122px !important;
+}
+.sheetUnit .sdStand{
+  bottom:0;
+}
+.unit.dead{
+  display:none !important;
+}
+@media (max-width:760px){
+  .sheetSprite{
+    width:94px !important;
+    height:94px !important;
+  }
+  .sheetUnit .sprite{
+    width:94px !important;
+    height:94px !important;
+  }
+  .sheetUnit .sdSpriteWrap{
+    width:94px !important;
+    height:104px !important;
+  }
+}
