@@ -1,0 +1,6 @@
+[
+  {"id":"kamome_lr_001","name":"久島 鴎","nameEn":"Kushima Kamome","series":"Summer Pockets","rarity":"UR","rarityLabel":"ULTIMATE RARE","attribute":"記憶","image":"images/kamome_lr_001.png","hp":99999,"atk":99999,"def":99999,"spd":99999,"luck":99999,"skillName":"静寂の羽ばたき・極","skillText":"敵全体に絶大なダメージを与え、自身の全ステータスを永続的に強化する。","profile":"どこか影のある少女。静かに、優しく、誰かを見守るその眼差しは、夏の記憶の中で忘れられない。"},
+  {"id":"memory_sr_001","name":"夏空の記憶","nameEn":"Memory of Summer Sky","series":"Original","rarity":"SR","rarityLabel":"SUPER RARE","attribute":"空","image":"images/card_back.svg","hp":4200,"atk":5100,"def":3600,"spd":4700,"luck":3200,"skillName":"青空の追い風","skillText":"味方全体のSPDを少し上昇させる。","profile":"夏空に浮かぶ、淡い記憶の欠片。"},
+  {"id":"shell_r_001","name":"浜辺の貝殻","nameEn":"Seaside Shell","series":"Original","rarity":"R","rarityLabel":"RARE","attribute":"海","image":"images/card_back.svg","hp":2600,"atk":2800,"def":2400,"spd":2100,"luck":1800,"skillName":"潮騒の守り","skillText":"自身のDEFを少し上昇させる。","profile":"浜辺で見つけた小さな貝殻。"},
+  {"id":"feather_n_001","name":"白い羽","nameEn":"White Feather","series":"Original","rarity":"N","rarityLabel":"NORMAL","attribute":"風","image":"images/card_back.svg","hp":1200,"atk":1500,"def":1000,"spd":1700,"luck":900,"skillName":"小さな羽ばたき","skillText":"敵単体に小ダメージを与える。","profile":"風に乗って流れてきた、白く小さな羽。"}
+]
