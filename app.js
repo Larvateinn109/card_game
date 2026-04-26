@@ -1,6 +1,6 @@
 const SAVE_KEY = "summer_card_battle_v13_landscape";
 const TICK_MS = 100;
-const EMBEDDED_CARDS = [{"id": "yuki_lr_001", "name": "水上 由岐", "rarity": "LR", "position": "front", "attribute": "記憶", "baseHp": 5200, "baseAtk": 980, "baseDef": 420, "baseSpd": 720, "baseLuck": 430, "growHp": 280, "growAtk": 64, "growDef": 28, "growSpd": 34, "growLuck": 20, "dupeBonusRate": 0.035, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "踏み込み掌打", "type": "attack", "target": "front_enemy", "power": 1.65, "tpGain": 18, "duration": 1300}, "skill2": {"name": "旋風蹴り", "type": "attack", "target": "enemy_area", "power": 1.25, "tpGain": 20, "duration": 1500}, "ultimate": {"name": "終ノ空・崩拳連撃", "type": "attack", "target": "enemy_all", "power": 2.8, "tpCost": 100, "duration": 2400}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"], "battleImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_battle_test.png", "iconImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_icon_test.png", "cardImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_card_lr.png", "sdImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_battle_test.png"}, {"id": "kamome_ur_001", "name": "久島 鴎", "rarity": "UR", "position": "middle", "attribute": "空", "baseHp": 4300, "baseAtk": 820, "baseDef": 380, "baseSpd": 760, "baseLuck": 620, "growHp": 230, "growAtk": 52, "growDef": 24, "growSpd": 38, "growLuck": 30, "dupeBonusRate": 0.03, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "リーフストーン", "type": "attack", "target": "front_enemy", "power": 1.45, "tpGain": 18, "duration": 1250}, "skill2": {"name": "夏風の加護", "type": "buff", "target": "ally_all", "stat": "spd", "value": 0.18, "duration": 1300, "buffDuration": 7000, "tpGain": 20}, "ultimate": {"name": "静寂の羽ばたき・極", "type": "attack", "target": "enemy_all", "power": 2.35, "tpCost": 100, "duration": 2400}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"], "sdImage": ""}, {"id": "front_sr_001", "name": "前衛アタッカー", "rarity": "SR", "position": "front", "attribute": "火", "baseHp": 3900, "baseAtk": 720, "baseDef": 360, "baseSpd": 640, "baseLuck": 300, "growHp": 200, "growAtk": 42, "growDef": 20, "growSpd": 26, "growLuck": 14, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "強打", "type": "attack", "target": "front_enemy", "power": 1.35, "tpGain": 16, "duration": 1200}, "skill2": {"name": "気合", "type": "buff", "target": "self", "stat": "atk", "value": 0.18, "duration": 1200, "buffDuration": 7000, "tpGain": 18}, "ultimate": {"name": "渾身連打", "type": "attack", "target": "front_enemy", "power": 3.1, "tpCost": 100, "duration": 2300}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"], "sdImage": ""}, {"id": "healer_sr_001", "name": "支援ヒーラー", "rarity": "SR", "position": "back", "attribute": "水", "baseHp": 3400, "baseAtk": 520, "baseDef": 300, "baseSpd": 600, "baseLuck": 410, "growHp": 170, "growAtk": 28, "growDef": 18, "growSpd": 24, "growLuck": 20, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 0.85, "tpGain": 12, "duration": 900}, "skill1": {"name": "応急手当", "type": "heal", "target": "lowest_ally", "power": 1.3, "tpGain": 18, "duration": 1200}, "skill2": {"name": "防御支援", "type": "buff", "target": "ally_all", "stat": "def", "value": 0.16, "duration": 1300, "buffDuration": 7000, "tpGain": 18}, "ultimate": {"name": "全体回復", "type": "heal", "target": "ally_all", "power": 1.8, "tpCost": 100, "duration": 2300}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"], "sdImage": ""}, {"id": "mage_sr_001", "name": "後衛メイジ", "rarity": "SR", "position": "back", "attribute": "星", "baseHp": 3100, "baseAtk": 840, "baseDef": 260, "baseSpd": 580, "baseLuck": 520, "growHp": 150, "growAtk": 50, "growDef": 14, "growSpd": 22, "growLuck": 24, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 0.95, "tpGain": 12, "duration": 900}, "skill1": {"name": "星弾", "type": "attack", "target": "front_enemy", "power": 1.55, "tpGain": 18, "duration": 1250}, "skill2": {"name": "小爆発", "type": "attack", "target": "enemy_area", "power": 1.15, "tpGain": 20, "duration": 1450}, "ultimate": {"name": "星降る夜", "type": "attack", "target": "enemy_all", "power": 2.45, "tpCost": 100, "duration": 2500}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"], "sdImage": ""}];
+const EMBEDDED_CARDS = [{"id": "yuki_lr_001", "name": "水上 由岐", "rarity": "LR", "position": "front", "attribute": "記憶", "baseHp": 5200, "baseAtk": 980, "baseDef": 420, "baseSpd": 720, "baseLuck": 430, "growHp": 280, "growAtk": 64, "growDef": 28, "growSpd": 34, "growLuck": 20, "dupeBonusRate": 0.035, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "踏み込み掌打", "type": "attack", "target": "front_enemy", "power": 1.65, "tpGain": 18, "duration": 1300}, "skill2": {"name": "旋風蹴り", "type": "attack", "target": "enemy_area", "power": 1.25, "tpGain": 20, "duration": 1500}, "ultimate": {"name": "終ノ空・崩拳連撃", "type": "attack", "target": "enemy_all", "power": 2.8, "tpCost": 100, "duration": 2400}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"], "battleImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_battle_test.png", "iconImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_icon_test.png", "cardImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_card_lr.png", "sdImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_battle_test.png", "sdSheetImage": "images/yuki_sprite_sheet.png", "sheetCols": 4, "sheetRows": 5, "frameWidth": 280, "frameHeight": 280, "animations": {"idle": [0, 1, 2, 1], "normalAttack": [8, 9, 10, 11], "skill1": [12, 13, 14, 15], "skill2": [8, 9, 10, 12, 13, 14, 15], "ultimate": [16, 17, 18, 19]}}, {"id": "kamome_ur_001", "name": "久島 鴎", "rarity": "UR", "position": "middle", "attribute": "空", "baseHp": 4300, "baseAtk": 820, "baseDef": 380, "baseSpd": 760, "baseLuck": 620, "growHp": 230, "growAtk": 52, "growDef": 24, "growSpd": 38, "growLuck": 30, "dupeBonusRate": 0.03, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "リーフストーン", "type": "attack", "target": "front_enemy", "power": 1.45, "tpGain": 18, "duration": 1250}, "skill2": {"name": "夏風の加護", "type": "buff", "target": "ally_all", "stat": "spd", "value": 0.18, "duration": 1300, "buffDuration": 7000, "tpGain": 20}, "ultimate": {"name": "静寂の羽ばたき・極", "type": "attack", "target": "enemy_all", "power": 2.35, "tpCost": 100, "duration": 2400}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"], "sdImage": ""}, {"id": "front_sr_001", "name": "前衛アタッカー", "rarity": "SR", "position": "front", "attribute": "火", "baseHp": 3900, "baseAtk": 720, "baseDef": 360, "baseSpd": 640, "baseLuck": 300, "growHp": 200, "growAtk": 42, "growDef": 20, "growSpd": 26, "growLuck": 14, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "強打", "type": "attack", "target": "front_enemy", "power": 1.35, "tpGain": 16, "duration": 1200}, "skill2": {"name": "気合", "type": "buff", "target": "self", "stat": "atk", "value": 0.18, "duration": 1200, "buffDuration": 7000, "tpGain": 18}, "ultimate": {"name": "渾身連打", "type": "attack", "target": "front_enemy", "power": 3.1, "tpCost": 100, "duration": 2300}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"], "sdImage": ""}, {"id": "healer_sr_001", "name": "支援ヒーラー", "rarity": "SR", "position": "back", "attribute": "水", "baseHp": 3400, "baseAtk": 520, "baseDef": 300, "baseSpd": 600, "baseLuck": 410, "growHp": 170, "growAtk": 28, "growDef": 18, "growSpd": 24, "growLuck": 20, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 0.85, "tpGain": 12, "duration": 900}, "skill1": {"name": "応急手当", "type": "heal", "target": "lowest_ally", "power": 1.3, "tpGain": 18, "duration": 1200}, "skill2": {"name": "防御支援", "type": "buff", "target": "ally_all", "stat": "def", "value": 0.16, "duration": 1300, "buffDuration": 7000, "tpGain": 18}, "ultimate": {"name": "全体回復", "type": "heal", "target": "ally_all", "power": 1.8, "tpCost": 100, "duration": 2300}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"], "sdImage": ""}, {"id": "mage_sr_001", "name": "後衛メイジ", "rarity": "SR", "position": "back", "attribute": "星", "baseHp": 3100, "baseAtk": 840, "baseDef": 260, "baseSpd": 580, "baseLuck": 520, "growHp": 150, "growAtk": 50, "growDef": 14, "growSpd": 22, "growLuck": 24, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 0.95, "tpGain": 12, "duration": 900}, "skill1": {"name": "星弾", "type": "attack", "target": "front_enemy", "power": 1.55, "tpGain": 18, "duration": 1250}, "skill2": {"name": "小爆発", "type": "attack", "target": "enemy_area", "power": 1.15, "tpGain": 20, "duration": 1450}, "ultimate": {"name": "星降る夜", "type": "attack", "target": "enemy_all", "power": 2.45, "tpCost": 100, "duration": 2500}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"], "sdImage": ""}];
 
 let cards = [];
 let save = null;
@@ -124,6 +124,48 @@ function spriteContent(card, kind="battle") {
     return `<img src="${url}" alt="${card.name}" onerror="this.remove()">`;
   }
   return card.name ? card.name.slice(0,1) : "?";
+}
+
+
+function getAnimationName(unit) {
+  if (!unit?.action) return "idle";
+  if (unit.action.ultimate) return "ultimate";
+  const key = unit.action.key;
+  if (key === "normalAttack") return "normalAttack";
+  if (key === "skill1") return "skill1";
+  if (key === "skill2") return "skill2";
+  return "idle";
+}
+
+function getAnimationFrames(unit) {
+  const name = getAnimationName(unit);
+  const animations = unit.card.animations || {};
+  return animations[name] || animations.idle || [0];
+}
+
+function getFrameIndex(unit) {
+  const frames = getAnimationFrames(unit);
+  if (!frames.length) return 0;
+
+  if (!unit.action) {
+    return frames[Math.floor((battle.now || 0) / 280) % frames.length];
+  }
+
+  const duration = unit.action.data?.duration || 1000;
+  const actionStart = unit.actionEnd - duration;
+  const elapsed = Math.max(0, Math.min(duration, battle.now - actionStart));
+  const index = Math.min(frames.length - 1, Math.floor((elapsed / duration) * frames.length));
+  return frames[index];
+}
+
+function spriteSheetStyle(card, frameIndex) {
+  const cols = card.sheetCols || 4;
+  const rows = card.sheetRows || 5;
+  const col = frameIndex % cols;
+  const row = Math.floor(frameIndex / cols);
+  const x = cols <= 1 ? 0 : (col / (cols - 1)) * 100;
+  const y = rows <= 1 ? 0 : (row / (rows - 1)) * 100;
+  return `background-image:url('${card.sdSheetImage}');background-size:${cols * 100}% ${rows * 100}%;background-position:${x}% ${y}%;`;
 }
 
 function getCard(id) {
@@ -475,21 +517,38 @@ function createUnitEl(u, i, side) {
   const hp = Math.max(0, Math.floor(u.hp / u.maxHp * 100));
   const tp = Math.max(0, Math.floor(u.tp));
 
+  const hasSheet = !!u.card.sdSheetImage;
+  const hasSd = hasSheet || !!(u.card.sdImage || u.card.battleImage || "");
   const div = document.createElement("div");
-  div.className = `unit ${side} ${u.alive ? "" : "dead"} ${u.state === "ultimate" ? "ultimate" : ""}`;
+  div.className = `unit ${side} ${u.alive ? "" : "dead"} ${u.state === "ultimate" ? "ultimate" : ""} ${hasSd ? "sdUnit" : "basicUnit"} ${hasSheet ? "sheetUnit" : ""}`;
   if (u.state === "attack") div.classList.add("attack");
   div.id = u.uid;
-  div.style.left = `${pos.x - 42}px`;
-  div.style.top = `${pos.y - 60}px`;
+  div.style.left = `${pos.x - 52}px`;
+  div.style.top = `${pos.y - 78}px`;
+
+  let spriteInner = "";
+  if (hasSheet) {
+    const frameIndex = getFrameIndex(u);
+    spriteInner = `<div class="sheetSprite" style="${spriteSheetStyle(u.card, frameIndex)}"></div>`;
+  } else if (hasSd) {
+    spriteInner = spriteContent(u.card, "sd");
+  } else {
+    spriteInner = u.name.slice(0,1);
+  }
+
   div.innerHTML = `
     <div class="unitName">${u.name}</div>
-    <div class="sprite">${spriteContent(u.card, "battle")}</div>
+    <div class="sdSpriteWrap">
+      <div class="sprite ${hasSd ? "sdSprite" : ""}">${spriteInner}</div>
+      <div class="sdStand"></div>
+    </div>
     <div class="shadow"></div>
     <div class="hpBar"><div class="hpFill" style="width:${hp}%"></div></div>
     <div class="tpBarMini"><div class="tpFillMini" style="width:${tp}%"></div></div>
   `;
   return div;
 }
+
 
 function renderUltimate() {
   const box = document.getElementById("ultimateIcons");

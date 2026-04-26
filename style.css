@@ -325,3 +325,54 @@ button:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.28)}
   border:1px solid rgba(232,199,111,.42);
   box-shadow:0 0 14px rgba(232,199,111,.18);
 }
+
+/* v1.6.0 sprite sheet motion */
+.sheetUnit{
+  width:104px;
+  height:150px;
+}
+.sheetUnit .sprite{
+  background:transparent;
+  border:none;
+  box-shadow:none;
+  overflow:visible;
+  width:100px;
+  height:116px;
+}
+.sheetUnit .sdSpriteWrap{
+  width:104px;
+  height:124px;
+}
+.sheetSprite{
+  width:100px;
+  height:116px;
+  background-repeat:no-repeat;
+  image-rendering:auto;
+  filter:drop-shadow(0 8px 8px rgba(0,0,0,.38));
+  transform-origin:center bottom;
+}
+.sheetUnit.attack.ally{
+  transform:translateX(52px) translateY(-6px) scale(1.08);
+}
+.sheetUnit.attack.enemy{
+  transform:translateX(-52px) translateY(-6px) scale(1.08);
+}
+.sheetUnit.attack .sheetSprite{
+  animation:sheetAttackPop .36s ease;
+}
+.sheetUnit.ultimate .sheetSprite{
+  animation:sheetUltimateGlow .9s ease infinite;
+}
+@keyframes sheetAttackPop{
+  0%{transform:scale(1)}
+  45%{transform:scale(1.10)}
+  100%{transform:scale(1)}
+}
+@keyframes sheetUltimateGlow{
+  50%{filter:drop-shadow(0 0 12px #fff) drop-shadow(0 0 22px #8d5cff)}
+}
+@media (max-width:760px){
+  .sheetUnit{width:86px;height:132px}
+  .sheetUnit .sprite{width:84px;height:100px}
+  .sheetSprite{width:84px;height:100px}
+}
