@@ -310,3 +310,18 @@ button:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.28)}
   .battleSidebar{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .battleLog{min-height:120px;max-height:180px}
 }
+
+
+.versionBadge{
+  display:inline-block;
+  margin:4px 0 8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:1000;
+  letter-spacing:.04em;
+  color:#fff3a9;
+  background:rgba(0,0,0,.32);
+  border:1px solid rgba(232,199,111,.42);
+  box-shadow:0 0 14px rgba(232,199,111,.18);
+}
