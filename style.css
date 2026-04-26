@@ -114,7 +114,7 @@ button:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.28)}
 .unit.dead{opacity:.28;filter:grayscale(1)}
 .unit.attack.ally{transform:translateX(30px) scale(1.08)}
 .unit.attack.enemy{transform:translateX(-30px) scale(1.08)}
-.unit.ultimate{transform:scale(1.18);filter:drop-shadow(0 0 12px #fff) drop-shadow(0 0 20px var(--blue));z-index:11}
+.unit.ultimate{transform:translateY(-8px) scale(1.16);filter:drop-shadow(0 0 12px #fff) drop-shadow(0 0 20px var(--blue));z-index:11}
 .unit.hit{animation:shake .2s linear 2;filter:brightness(1.8)}
 @keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 

@@ -57,7 +57,8 @@
     ],
     "battleImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_battle_test.png",
     "iconImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_icon_test.png",
-    "cardImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_card_lr.png"
+    "cardImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_card_lr.png",
+    "sdImage": "https://pub-70def8b05f834fa7aec7c768f820d041.r2.dev/card-images/images/yuki_battle_test.png"
   },
   {
     "id": "kamome_ur_001",
@@ -116,7 +117,8 @@
       "normalAttack",
       "skill2",
       "normalAttack"
-    ]
+    ],
+    "sdImage": ""
   },
   {
     "id": "front_sr_001",
@@ -175,7 +177,8 @@
       "normalAttack",
       "skill2",
       "normalAttack"
-    ]
+    ],
+    "sdImage": ""
   },
   {
     "id": "healer_sr_001",
@@ -234,7 +237,8 @@
       "normalAttack",
       "skill2",
       "normalAttack"
-    ]
+    ],
+    "sdImage": ""
   },
   {
     "id": "mage_sr_001",
@@ -291,6 +295,7 @@
       "normalAttack",
       "skill2",
       "normalAttack"
-    ]
+    ],
+    "sdImage": ""
   }
 ]
