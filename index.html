@@ -1,1 +1,90 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Summer Card Collection</title><link rel="stylesheet" href="style.css"></head><body><div id="app"><header class="topbar"><div><div class="player">Lv.<span id="playerLevel">1</span> 先生</div><div class="stamina">ST <span id="stamina">100</span>/100</div></div><div class="currency"><span>💎 <b id="gems">3000</b></span><span>🪙 <b id="coins">10000</b></span></div></header><main><section id="homeScreen" class="screen active"><div class="heroPanel"><div class="shine"></div><img id="homeCardImage" class="homeCard" src="" alt="お気に入りカード"><div class="homeText"><div class="rarityBadge ur">ULTIMATE RARE</div><h1 id="homeCardName">久島 鴎</h1><p id="homeSkill">静寂の羽ばたき・極</p></div></div><div class="notice"><b>ログインボーナス</b><p>今日の報酬：💎 虹の貝殻 ×300</p><button id="loginBonusBtn">受け取る</button></div><div class="quickGrid"><button data-nav="gachaScreen">ガチャへ</button><button data-nav="cardsScreen">カード一覧</button><button data-nav="questScreen">クエスト</button><button id="resetBtn">セーブ初期化</button></div></section><section id="gachaScreen" class="screen"><div class="pageTitle"><h2>記憶のガチャ</h2><p>最高レア UR 排出率 3%</p></div><div class="gachaMachine"><div class="orb"></div><p>虹の貝殻を使ってカードを入手します。</p><div class="gachaButtons"><button id="singlePull">1回引く<br><small>💎300</small></button><button id="tenPull">10連引く<br><small>💎3000</small></button></div></div><div id="gachaResult" class="resultGrid"></div></section><section id="cardsScreen" class="screen"><div class="pageTitle"><h2>カード一覧</h2><p>所持数 <span id="ownedCount">0</span>/<span id="totalCount">0</span></p></div><div class="filters"><button class="filter active" data-filter="ALL">ALL</button><button class="filter" data-filter="UR">UR</button><button class="filter" data-filter="SR">SR</button><button class="filter" data-filter="R">R</button><button class="filter" data-filter="N">N</button></div><div id="cardGrid" class="cardGrid"></div></section><section id="questScreen" class="screen"><div class="pageTitle"><h2>クエスト</h2><p>簡易オートバトルで報酬を獲得します。</p></div><div class="questCard"><h3>第1話：夏空のはじまり</h3><p>消費ST 10 / 報酬 💎50 🪙500</p><button id="questBtn">挑戦する</button><div id="battleLog" class="battleLog"></div></div></section><section id="detailScreen" class="screen"><button class="backBtn" data-nav="cardsScreen">← 戻る</button><div id="detailContent"></div></section></main><nav class="bottomNav"><button data-nav="homeScreen" class="active">ホーム</button><button data-nav="cardsScreen">カード</button><button data-nav="questScreen">クエスト</button><button data-nav="gachaScreen">ガチャ</button></nav></div><div id="toast"></div><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Summer Card Battle</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div>
+      <div class="player">Lv.<span id="playerLevel">1</span> 先生</div>
+      <div class="stamina">ST <span id="stamina">100</span>/100</div>
+    </div>
+    <div class="currency">
+      <span>💎 <b id="gems">3000</b></span>
+      <span>🪙 <b id="coins">10000</b></span>
+    </div>
+  </header>
+
+  <main>
+    <section id="homeScreen" class="screen active">
+      <div class="hero">
+        <div class="heroText">
+          <p class="label">BATTLE TEST VERSION</p>
+          <h1>Summer Card Battle</h1>
+          <p>行動ループ、TP、必殺技キャンセルを実装したテスト版です。</p>
+          <button data-nav="battleScreen">バトル開始</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>今回入ったもの</h2>
+        <ul>
+          <li>5人編成のプリコネ風バトル</li>
+          <li>通常攻撃・スキル1・スキル2の行動ループ</li>
+          <li>キャラアイコンタップで必殺技</li>
+          <li>行動中キャンセル → 必殺技後に次のループ行動へ</li>
+          <li>TPゲージ、HPゲージ、ダメージ表示</li>
+          <li>被り凸・レベル込みのステータス計算</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="battleScreen" class="screen">
+      <div class="battleHeader">
+        <div>
+          <b>クエスト：戦闘テスト</b>
+          <p id="battleStateText">待機中</p>
+        </div>
+        <div class="battleButtons">
+          <button id="startBattleBtn">開始</button>
+          <button id="resetBattleBtn">リセット</button>
+        </div>
+      </div>
+
+      <div id="battleField" class="battleField">
+        <div id="enemyLine" class="unitLine enemyLine"></div>
+        <div id="effectLayer" class="effectLayer"></div>
+        <div id="allyLine" class="unitLine allyLine"></div>
+      </div>
+
+      <div class="ultimatePanel">
+        <div class="panelTitle">必殺技：TP100でアイコンをタップ</div>
+        <div id="ultimateIcons" class="ultimateIcons"></div>
+      </div>
+
+      <div class="battleLog" id="battleLog"></div>
+    </section>
+
+    <section id="cardsScreen" class="screen">
+      <div class="panel">
+        <h2>カード一覧</h2>
+        <div id="cardList" class="cardList"></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottomNav">
+    <button data-nav="homeScreen" class="active">ホーム</button>
+    <button data-nav="battleScreen">バトル</button>
+    <button data-nav="cardsScreen">カード</button>
+  </nav>
+</div>
+
+<div id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

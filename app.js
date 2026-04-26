@@ -1,1 +1,641 @@
-const SAVE_KEY="summer_card_collection_save_v1";let cards=[],save=null,currentFilter="ALL";const defaultSave=()=>({playerLevel:1,exp:0,stamina:100,gems:3000,coins:10000,loginBonusDate:"",favoriteCardId:"kamome_lr_001",ownedCards:{kamome_lr_001:{count:1,level:1,limitBreak:0,favorite:true}}});async function init(){cards=await fetch("cards.json").then(r=>r.json());loadSave();bindEvents();renderAll();navigate("homeScreen")}function loadSave(){const raw=localStorage.getItem(SAVE_KEY);save=raw?JSON.parse(raw):defaultSave()}function saveGame(){localStorage.setItem(SAVE_KEY,JSON.stringify(save))}function bindEvents(){document.querySelectorAll("[data-nav]").forEach(btn=>{btn.addEventListener("click",()=>navigate(btn.dataset.nav))});document.getElementById("singlePull").addEventListener("click",()=>pullGacha(1));document.getElementById("tenPull").addEventListener("click",()=>pullGacha(10));document.getElementById("loginBonusBtn").addEventListener("click",claimLoginBonus);document.getElementById("questBtn").addEventListener("click",runQuest);document.getElementById("resetBtn").addEventListener("click",()=>{if(!confirm("セーブデータを初期化しますか？"))return;localStorage.removeItem(SAVE_KEY);loadSave();renderAll();toast("セーブを初期化しました")});document.querySelectorAll(".filter").forEach(btn=>{btn.addEventListener("click",()=>{currentFilter=btn.dataset.filter;document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));btn.classList.add("active");renderCardGrid()})})}function navigate(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".bottomNav button").forEach(b=>{b.classList.toggle("active",b.dataset.nav===id)});if(id==="cardsScreen")renderCardGrid();window.scrollTo({top:0,behavior:"smooth"})}function renderAll(){renderHeader();renderHome();renderCardGrid()}function renderHeader(){document.getElementById("playerLevel").textContent=save.playerLevel;document.getElementById("stamina").textContent=save.stamina;document.getElementById("gems").textContent=save.gems;document.getElementById("coins").textContent=save.coins}function renderHome(){const fav=cards.find(c=>c.id===save.favoriteCardId)||cards[0];document.getElementById("homeCardImage").src=fav.image;document.getElementById("homeCardName").textContent=fav.name;document.getElementById("homeSkill").textContent=fav.skillName}function renderCardGrid(){const grid=document.getElementById("cardGrid");grid.innerHTML="";const list=currentFilter==="ALL"?cards:cards.filter(c=>c.rarity===currentFilter);const ownedIds=Object.keys(save.ownedCards);document.getElementById("ownedCount").textContent=ownedIds.length;document.getElementById("totalCount").textContent=cards.length;list.forEach(card=>{const owned=save.ownedCards[card.id];const div=document.createElement("button");div.className="cardThumb"+(owned?"":" locked");div.innerHTML=`<img src="${card.image}" alt="${card.name}"><span class="countBadge">${owned?"×"+owned.count:"未所持"}</span><span class="thumbName">${owned?card.name:"？？？"}</span>`;div.addEventListener("click",()=>showDetail(card.id));grid.appendChild(div)})}function showDetail(id){const card=cards.find(c=>c.id===id);const owned=save.ownedCards[id];const content=document.getElementById("detailContent");if(!owned){content.innerHTML=`<img class="detailCardImage" src="${card.image}" style="filter:brightness(.2) grayscale(1)" alt="未所持"><div class="detailPanel"><h2>？？？</h2><p>まだ入手していないカードです。</p></div>`;navigate("detailScreen");return}content.innerHTML=`<img class="detailCardImage" src="${card.image}" alt="${card.name}"><div class="detailPanel"><div class="rarityBadge ${card.rarity==="UR"?"ur":""}">${card.rarityLabel}</div><h2>${card.name}</h2><p>${card.nameEn} / ${card.series}</p><div class="stats"><div class="stat">HP <b>${card.hp}</b></div><div class="stat">ATK <b>${card.atk}</b></div><div class="stat">DEF <b>${card.def}</b></div><div class="stat">SPD <b>${card.spd}</b></div><div class="stat">LUCK <b>${card.luck}</b></div><div class="stat">Lv <b>${owned.level}</b></div></div><h3>${card.skillName}</h3><p>${card.skillText}</p><h3>PROFILE</h3><p>${card.profile}</p><button onclick="setFavorite('${card.id}')">ホームに設定</button></div>`;navigate("detailScreen")}window.setFavorite=function(id){save.favoriteCardId=id;Object.keys(save.ownedCards).forEach(k=>save.ownedCards[k].favorite=false);save.ownedCards[id].favorite=true;saveGame();renderHome();toast("ホームカードに設定しました")};function claimLoginBonus(){const today=new Date().toISOString().slice(0,10);if(save.loginBonusDate===today){toast("今日のログインボーナスは受け取り済みです");return}save.loginBonusDate=today;save.gems+=300;saveGame();renderHeader();toast("💎 虹の貝殻 ×300 を受け取りました")}function pullGacha(count){const cost=count*300;if(save.gems<cost){toast("虹の貝殻が足りません");return}save.gems-=cost;const results=[];for(let i=0;i<count;i++){const card=chooseCard();results.push(card);if(!save.ownedCards[card.id])save.ownedCards[card.id]={count:0,level:1,limitBreak:0,favorite:false};save.ownedCards[card.id].count+=1}saveGame();renderHeader();renderCardGrid();renderGachaResults(results)}function chooseCard(){const r=Math.random()*100;let rarity;if(r<3)rarity="UR";else if(r<13)rarity="SR";else if(r<43)rarity="R";else rarity="N";const pool=cards.filter(c=>c.rarity===rarity);return pool[Math.floor(Math.random()*pool.length)]||cards[0]}function renderGachaResults(results){const box=document.getElementById("gachaResult");box.innerHTML="";navigate("gachaScreen");results.forEach((card,index)=>{const div=document.createElement("div");div.className="resultCard";div.innerHTML=`<div class="flip"><div class="face back"><img src="images/card_back.svg" alt="カード裏"></div><div class="face front"><img src="${card.image}" alt="${card.name}"><div class="resultName">[${card.rarity}] ${card.name}</div></div></div>`;div.addEventListener("click",()=>div.classList.add("revealed"));box.appendChild(div);setTimeout(()=>{div.classList.add("revealed");if(card.rarity==="UR")toast("🌈 最高レア！ "+card.name)},380+index*180)})}function runQuest(){const log=document.getElementById("battleLog");if(save.stamina<10){log.innerHTML="スタミナが足りません。";return}save.stamina-=10;const fav=cards.find(c=>c.id===save.favoriteCardId)||cards[0];const damage=Math.floor(fav.atk*(.85+Math.random()*.3));const critical=Math.random()<.25;const rewardGem=50,rewardCoin=500;save.gems+=rewardGem;save.coins+=rewardCoin;save.exp+=20;if(save.exp>=100){save.exp-=100;save.playerLevel+=1;save.stamina=100}saveGame();renderHeader();log.innerHTML=`${fav.name} の攻撃！<br>${critical?"クリティカル！ ":""}${damage.toLocaleString()} ダメージ！<br>クエストクリア！ 報酬：💎${rewardGem} 🪙${rewardCoin}`}function toast(message){const el=document.getElementById("toast");el.textContent=message;el.classList.add("show");clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>el.classList.remove("show"),2200)}init();
+const SAVE_KEY = "summer_card_battle_save_v1";
+const TICK_MS = 100;
+const FALLBACK_IMAGE = "images/card_back.svg";
+
+let cards = [];
+let save = null;
+let battle = null;
+let battleTimer = null;
+
+function defaultSave() {
+  return {
+    playerLevel: 1,
+    stamina: 100,
+    gems: 3000,
+    coins: 10000,
+    deck: ["yuki_lr_001", "kamome_ur_001", "front_r_001", "healer_sr_001", "mage_sr_001"],
+    ownedCards: {
+      "yuki_lr_001": { count: 1, level: 1, exp: 0, limitBreak: 0, favorite: true },
+      "kamome_ur_001": { count: 1, level: 1, exp: 0, limitBreak: 0, favorite: false },
+      "front_r_001": { count: 1, level: 1, exp: 0, limitBreak: 0, favorite: false },
+      "healer_sr_001": { count: 1, level: 1, exp: 0, limitBreak: 0, favorite: false },
+      "mage_sr_001": { count: 1, level: 1, exp: 0, limitBreak: 0, favorite: false }
+    }
+  };
+}
+
+async function init() {
+  cards = await fetch("cards.json").then(r => r.json());
+  loadSave();
+  bindEvents();
+  renderHeader();
+  renderCards();
+  initBattle();
+  navigate("homeScreen");
+}
+
+function loadSave() {
+  const raw = localStorage.getItem(SAVE_KEY);
+  save = raw ? JSON.parse(raw) : defaultSave();
+
+  // 古いセーブやカード追加時の補正
+  save.deck ??= defaultSave().deck;
+  save.ownedCards ??= defaultSave().ownedCards;
+}
+
+function saveGame() {
+  localStorage.setItem(SAVE_KEY, JSON.stringify(save));
+}
+
+function bindEvents() {
+  document.querySelectorAll("[data-nav]").forEach(btn => {
+    btn.addEventListener("click", () => navigate(btn.dataset.nav));
+  });
+
+  document.getElementById("startBattleBtn").addEventListener("click", startBattle);
+  document.getElementById("resetBattleBtn").addEventListener("click", () => {
+    stopBattle();
+    initBattle();
+    renderBattle();
+    logBattle("バトルをリセットしました。");
+  });
+}
+
+function navigate(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".bottomNav button").forEach(b => {
+    b.classList.toggle("active", b.dataset.nav === id);
+  });
+
+  if (id === "battleScreen") renderBattle();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderHeader() {
+  document.getElementById("playerLevel").textContent = save.playerLevel;
+  document.getElementById("stamina").textContent = save.stamina;
+  document.getElementById("gems").textContent = save.gems;
+  document.getElementById("coins").textContent = save.coins;
+}
+
+function renderCards() {
+  const list = document.getElementById("cardList");
+  list.innerHTML = "";
+  cards.forEach(card => {
+    const owned = save.ownedCards[card.id];
+    const stats = owned ? calcStats(card, owned) : null;
+    const row = document.createElement("div");
+    row.className = "cardRow";
+    row.innerHTML = `
+      <div class="cardIcon">${imageOrInitial(card, "iconImage")}</div>
+      <div>
+        <h3>[${card.rarity}] ${card.name}</h3>
+        <p>${card.series} / ${card.attribute} / ${owned ? `Lv.${owned.level} +${stats.limitBreak}凸 ATK ${stats.atk}` : "未所持"}</p>
+      </div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function getCard(id) {
+  return cards.find(c => c.id === id);
+}
+
+function imageOrInitial(card, key) {
+  const url = card[key] || card.iconImage || card.cardImage || "";
+  if (url) return `<img src="${url}" alt="${card.name}" onerror="this.remove()">`;
+  return `<span>${card.name.slice(0, 1)}</span>`;
+}
+
+function calcLimitBreak(count) {
+  return Math.max(0, (count ?? 1) - 1);
+}
+
+function calcStats(card, owned) {
+  const level = owned.level ?? 1;
+  const limitBreak = owned.limitBreak ?? calcLimitBreak(owned.count ?? 1);
+  const rate = card.dupeBonusRate ?? 0.03;
+  const multiplier = 1 + rate * Math.sqrt(limitBreak);
+
+  return {
+    level,
+    limitBreak,
+    dupeBonusPercent: (multiplier - 1) * 100,
+    maxHp: Math.floor((card.baseHp + card.growHp * (level - 1)) * multiplier),
+    atk: Math.floor((card.baseAtk + card.growAtk * (level - 1)) * multiplier),
+    def: Math.floor((card.baseDef + card.growDef * (level - 1)) * multiplier),
+    spd: Math.floor((card.baseSpd + card.growSpd * (level - 1)) * multiplier),
+    luck: Math.floor((card.baseLuck + card.growLuck * (level - 1)) * multiplier)
+  };
+}
+
+function makeAllyUnit(cardId, index) {
+  const card = getCard(cardId);
+  const owned = save.ownedCards[cardId] ?? { count: 1, level: 1, limitBreak: 0 };
+  const stats = calcStats(card, owned);
+
+  return {
+    uid: `ally_${index}`,
+    side: "ally",
+    card,
+    name: card.name,
+    hp: stats.maxHp,
+    maxHp: stats.maxHp,
+    atk: stats.atk,
+    def: stats.def,
+    spd: stats.spd,
+    luck: stats.luck,
+    tp: 0,
+    loopIndex: 0,
+    currentAction: null,
+    actionEndAt: 0,
+    impactAt: 0,
+    didImpact: false,
+    state: "idle",
+    statusEffects: [],
+    buffs: [],
+    isAlive: true
+  };
+}
+
+function makeEnemyUnit(index, wave = 1) {
+  const baseHp = 2600 + wave * 650 + index * 420;
+  const baseAtk = 380 + wave * 90 + index * 40;
+  const names = ["シャドウA", "シャドウB", "シャドウC"];
+  return {
+    uid: `enemy_${index}`,
+    side: "enemy",
+    name: names[index] ?? `敵${index + 1}`,
+    hp: baseHp,
+    maxHp: baseHp,
+    atk: baseAtk,
+    def: 220 + wave * 45,
+    spd: 460 + index * 40,
+    luck: 150,
+    tp: 0,
+    loopIndex: 0,
+    currentAction: null,
+    actionEndAt: 0,
+    impactAt: 0,
+    didImpact: false,
+    state: "idle",
+    statusEffects: [],
+    buffs: [],
+    isAlive: true,
+    card: {
+      name: names[index] ?? `敵${index + 1}`,
+      iconImage: "",
+      normalAttack: {
+        name: "攻撃",
+        type: "attack",
+        target: "front_enemy",
+        power: 0.82,
+        tpGain: 0,
+        duration: 1100,
+        motion: "punch"
+      },
+      skill1: {
+        name: "強攻撃",
+        type: "attack",
+        target: "front_enemy",
+        power: 1.1,
+        tpGain: 0,
+        duration: 1350,
+        motion: "dashPunch"
+      },
+      skill2: {
+        name: "威嚇",
+        type: "buff",
+        target: "self",
+        stat: "atk",
+        value: 0.1,
+        duration: 5000,
+        tpGain: 0,
+        duration: 1200,
+        motion: "buff"
+      },
+      actionLoop: ["normalAttack", "normalAttack", "skill1", "normalAttack", "skill2"]
+    }
+  };
+}
+
+function initBattle() {
+  battle = {
+    running: false,
+    now: 0,
+    wave: 1,
+    maxWave: 1,
+    allies: save.deck.map(makeAllyUnit),
+    enemies: [makeEnemyUnit(0), makeEnemyUnit(1), makeEnemyUnit(2)],
+    logs: []
+  };
+}
+
+function startBattle() {
+  if (battle.running) {
+    toast("すでに戦闘中です");
+    return;
+  }
+  battle.running = true;
+  battle.now = 0;
+  document.getElementById("battleStateText").textContent = "戦闘中";
+  logBattle("戦闘開始！");
+  battleTimer = setInterval(tickBattle, TICK_MS);
+}
+
+function stopBattle() {
+  battle.running = false;
+  if (battleTimer) clearInterval(battleTimer);
+  battleTimer = null;
+  document.getElementById("battleStateText").textContent = "停止中";
+}
+
+function tickBattle() {
+  if (!battle.running) return;
+  battle.now += TICK_MS;
+
+  const units = [...battle.allies, ...battle.enemies].filter(u => u.isAlive);
+  units.forEach(unit => updateStatuses(unit));
+
+  // 行動完了処理
+  units.forEach(unit => {
+    if (unit.currentAction && battle.now >= unit.impactAt && !unit.didImpact) {
+      unit.didImpact = true;
+      resolveActionImpact(unit);
+    }
+
+    if (unit.currentAction && battle.now >= unit.actionEndAt) {
+      finishAction(unit);
+    }
+  });
+
+  // 次行動開始
+  const actingUnits = [...battle.allies, ...battle.enemies].filter(u => u.isAlive);
+  actingUnits
+    .filter(u => !u.currentAction && u.state !== "stunned")
+    .sort((a, b) => b.spd - a.spd)
+    .forEach(unit => startNextLoopAction(unit));
+
+  checkBattleEnd();
+  renderBattle();
+}
+
+function updateStatuses(unit) {
+  unit.statusEffects = unit.statusEffects.filter(s => battle.now < s.endAt);
+  unit.buffs = unit.buffs.filter(b => battle.now < b.endAt);
+  if (unit.statusEffects.some(s => s.type === "stun")) {
+    unit.state = "stunned";
+  } else if (!unit.currentAction && unit.state === "stunned") {
+    unit.state = "idle";
+  }
+}
+
+function getEffectiveStat(unit, stat) {
+  let value = unit[stat] ?? 0;
+  const buffs = unit.buffs.filter(b => b.stat === stat);
+  buffs.forEach(b => value *= (1 + b.value));
+  return Math.floor(value);
+}
+
+function startNextLoopAction(unit) {
+  if (!unit.isAlive) return;
+  const loop = unit.card.actionLoop;
+  const actionKey = loop[unit.loopIndex];
+
+  // 行動開始時点で次へ進める。これでUB割り込み後に次の行動から再開できる。
+  unit.loopIndex = (unit.loopIndex + 1) % loop.length;
+
+  const action = unit.card[actionKey];
+  startAction(unit, actionKey, action, false);
+}
+
+function startAction(unit, actionKey, action, isUltimate) {
+  if (!action) return;
+  unit.currentAction = {
+    key: actionKey,
+    data: action,
+    isUltimate
+  };
+  unit.didImpact = false;
+  unit.state = isUltimate ? "ultimate" : (action.motion ?? "attack");
+  unit.actionEndAt = battle.now + (action.duration ?? 1000);
+  unit.impactAt = battle.now + Math.floor((action.duration ?? 1000) * 0.55);
+
+  flashUnit(unit.uid, isUltimate ? "ultimate" : "attack");
+
+  if (isUltimate) {
+    showCutIn(unit, action);
+    logBattle(`${unit.name} の必殺技！ ${action.name}`);
+  } else {
+    logBattle(`${unit.name}：${action.name}`);
+  }
+}
+
+function finishAction(unit) {
+  const action = unit.currentAction;
+  unit.currentAction = null;
+  unit.state = "idle";
+  unit.actionEndAt = 0;
+  unit.impactAt = 0;
+  unit.didImpact = false;
+
+  if (action?.isUltimate) {
+    setTimeout(() => {
+      if (battle?.running && unit.isAlive && !unit.currentAction) {
+        startNextLoopAction(unit);
+      }
+    }, 300);
+  }
+}
+
+function cancelCurrentAction(unit) {
+  unit.currentAction = null;
+  unit.state = "idle";
+  unit.actionEndAt = 0;
+  unit.impactAt = 0;
+  unit.didImpact = false;
+}
+
+function activateUltimate(unitUid) {
+  const unit = battle.allies.find(u => u.uid === unitUid);
+  if (!unit || !unit.isAlive) return;
+  if (unit.tp < 100) {
+    toast("TPがまだ足りません");
+    return;
+  }
+  if (unit.state === "ultimate" || unit.state === "stunned") return;
+
+  const ultimate = unit.card.ultimate;
+  if (!ultimate) return;
+
+  // 行動中のループ行動をキャンセル。loopIndexは行動開始時に進んでいるので、UB後は次の行動から再開。
+  cancelCurrentAction(unit);
+  unit.tp = Math.max(0, unit.tp - (ultimate.tpCost ?? 100));
+  startAction(unit, "ultimate", ultimate, true);
+  renderBattle();
+}
+
+function resolveActionImpact(unit) {
+  const action = unit.currentAction?.data;
+  if (!action || !unit.isAlive) return;
+
+  if (action.type === "attack") {
+    const targets = selectTargets(unit, action.target);
+    targets.forEach(target => {
+      if (!target?.isAlive) return;
+      const damage = calcDamage(unit, target, action.power ?? 1);
+      target.hp = Math.max(0, target.hp - damage);
+      gainTp(unit, action.tpGain ?? 0);
+      gainTp(target, Math.min(18, Math.floor(damage / Math.max(1, target.maxHp) * 70)));
+
+      showDamage(target.uid, damage, false);
+      showSlash(target.uid);
+      flashUnit(target.uid, "hit");
+
+      if (target.hp <= 0) {
+        target.isAlive = false;
+        target.state = "dead";
+        target.currentAction = null;
+        logBattle(`${target.name} は倒れた。`);
+        gainTp(unit, 10);
+      }
+
+      applyEffects(unit, target, action.effects ?? []);
+    });
+  }
+
+  if (action.type === "heal") {
+    const targets = selectTargets(unit, action.target);
+    targets.forEach(target => {
+      if (!target?.isAlive) return;
+      const amount = Math.floor(getEffectiveStat(unit, "atk") * (action.power ?? 1));
+      target.hp = Math.min(target.maxHp, target.hp + amount);
+      gainTp(unit, action.tpGain ?? 0);
+      showDamage(target.uid, amount, true);
+    });
+  }
+
+  if (action.type === "buff") {
+    const targets = selectTargets(unit, action.target);
+    targets.forEach(target => {
+      if (!target?.isAlive) return;
+      target.buffs.push({
+        type: "buff",
+        stat: action.stat,
+        value: action.value ?? 0.1,
+        endAt: battle.now + (action.duration ?? 5000)
+      });
+      gainTp(unit, action.tpGain ?? 0);
+      logBattle(`${target.name} の ${action.stat.toUpperCase()} が上昇！`);
+    });
+  }
+}
+
+function selectTargets(unit, targetType) {
+  const enemies = unit.side === "ally" ? battle.enemies : battle.allies;
+  const allies = unit.side === "ally" ? battle.allies : battle.enemies;
+
+  const aliveEnemies = enemies.filter(u => u.isAlive);
+  const aliveAllies = allies.filter(u => u.isAlive);
+
+  if (targetType === "front_enemy") return aliveEnemies.slice(0, 1);
+  if (targetType === "enemy_all") return aliveEnemies;
+  if (targetType === "enemy_area") return aliveEnemies.slice(0, 2);
+  if (targetType === "ally_all") return aliveAllies;
+  if (targetType === "self") return [unit];
+  if (targetType === "lowest_ally") {
+    return aliveAllies.sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp)).slice(0, 1);
+  }
+  return aliveEnemies.slice(0, 1);
+}
+
+function calcDamage(attacker, defender, power) {
+  const atk = getEffectiveStat(attacker, "atk");
+  const def = getEffectiveStat(defender, "def");
+  const critRate = Math.min(0.5, 0.05 + (getEffectiveStat(attacker, "luck") / 3000));
+  const crit = Math.random() < critRate;
+  const raw = Math.max(1, atk * power - def * 0.38);
+  const variance = 0.9 + Math.random() * 0.2;
+  const damage = Math.floor(raw * variance * (crit ? 1.8 : 1));
+  return Math.max(1, damage);
+}
+
+function gainTp(unit, amount) {
+  if (!unit.isAlive) return;
+  unit.tp = Math.min(100, unit.tp + amount);
+}
+
+function applyEffects(source, target, effects) {
+  effects.forEach(effect => {
+    if (effect.type === "stun") {
+      const chance = effect.chance ?? 0;
+      if (Math.random() < chance) {
+        target.statusEffects.push({
+          type: "stun",
+          endAt: battle.now + (effect.duration ?? 1000)
+        });
+        logBattle(`${target.name} はスタンした！`);
+      }
+    }
+
+    if (effect.type === "def_down") {
+      target.buffs.push({
+        type: "buff",
+        stat: "def",
+        value: -(effect.value ?? 0.1),
+        endAt: battle.now + (effect.duration ?? 5000)
+      });
+      logBattle(`${target.name} のDEFが低下！`);
+    }
+
+    if (effect.type === "atk_up" && effect.target === "self") {
+      source.buffs.push({
+        type: "buff",
+        stat: "atk",
+        value: effect.value ?? 0.1,
+        endAt: battle.now + (effect.duration ?? 5000)
+      });
+      logBattle(`${source.name} のATKが上昇！`);
+    }
+  });
+}
+
+function checkBattleEnd() {
+  if (!battle.enemies.some(e => e.isAlive)) {
+    logBattle("勝利！ 報酬：💎50 🪙500");
+    save.gems += 50;
+    save.coins += 500;
+    saveGame();
+    renderHeader();
+    stopBattle();
+    document.getElementById("battleStateText").textContent = "勝利";
+    toast("クエストクリア！");
+  }
+
+  if (!battle.allies.some(a => a.isAlive)) {
+    logBattle("敗北……");
+    stopBattle();
+    document.getElementById("battleStateText").textContent = "敗北";
+  }
+}
+
+function renderBattle() {
+  renderUnitLine("allyLine", battle.allies);
+  renderUnitLine("enemyLine", battle.enemies);
+  renderUltimateIcons();
+}
+
+function renderUnitLine(id, units) {
+  const line = document.getElementById(id);
+  const oldFocus = document.activeElement;
+  line.innerHTML = "";
+
+  units.forEach(unit => {
+    const div = document.createElement("div");
+    div.className = `unit ${unit.side} ${unit.isAlive ? "" : "dead"} ${unit.state === "ultimate" ? "ultimate" : ""}`;
+    div.id = unit.uid;
+
+    const hpPct = Math.max(0, Math.floor(unit.hp / unit.maxHp * 100));
+    const tpPct = Math.max(0, Math.floor(unit.tp));
+    div.innerHTML = `
+      <div class="namePlate">${unit.name}</div>
+      <div class="unitSprite">${unit.card ? imageOrInitial(unit.card, "battleImage") : unit.name.slice(0, 1)}</div>
+      <div class="shadow"></div>
+      <div class="hpBar"><div class="hpFill" style="width:${hpPct}%"></div></div>
+      <div class="tpMiniBar"><div class="tpMiniFill" style="width:${tpPct}%"></div></div>
+    `;
+    line.appendChild(div);
+  });
+}
+
+function renderUltimateIcons() {
+  const box = document.getElementById("ultimateIcons");
+  box.innerHTML = "";
+  battle.allies.forEach(unit => {
+    const div = document.createElement("button");
+    div.className = `ultimateIcon ${unit.tp >= 100 && unit.isAlive ? "ready" : ""}`;
+    div.disabled = !unit.isAlive;
+    div.innerHTML = `
+      <div class="iconFace">${imageOrInitial(unit.card, "iconImage")}</div>
+      <div class="iconName">${unit.name}</div>
+      <div class="tpBar"><div class="tpFill" style="width:${unit.tp}%"></div></div>
+    `;
+    div.addEventListener("click", () => activateUltimate(unit.uid));
+    box.appendChild(div);
+  });
+}
+
+function flashUnit(uid, className) {
+  const el = document.getElementById(uid);
+  if (!el) return;
+  el.classList.add(className);
+  setTimeout(() => el.classList.remove(className), className === "ultimate" ? 800 : 320);
+}
+
+function getUnitCenter(uid) {
+  const unit = document.getElementById(uid);
+  const field = document.getElementById("battleField");
+  if (!unit || !field) return { x: 250, y: 250 };
+  const ur = unit.getBoundingClientRect();
+  const fr = field.getBoundingClientRect();
+  return {
+    x: ur.left - fr.left + ur.width / 2,
+    y: ur.top - fr.top + ur.height / 2
+  };
+}
+
+function showDamage(uid, amount, heal) {
+  const layer = document.getElementById("effectLayer");
+  const pos = getUnitCenter(uid);
+  const el = document.createElement("div");
+  el.className = `damageText ${heal ? "healText" : ""}`;
+  el.style.left = `${pos.x - 24}px`;
+  el.style.top = `${pos.y - 52}px`;
+  el.textContent = heal ? `+${amount}` : amount;
+  layer.appendChild(el);
+  setTimeout(() => el.remove(), 850);
+}
+
+function showSlash(uid) {
+  const layer = document.getElementById("effectLayer");
+  const pos = getUnitCenter(uid);
+  const el = document.createElement("div");
+  el.className = "slash";
+  el.style.left = `${pos.x - 54}px`;
+  el.style.top = `${pos.y - 18}px`;
+  layer.appendChild(el);
+  setTimeout(() => el.remove(), 420);
+}
+
+function showCutIn(unit, action) {
+  const layer = document.getElementById("effectLayer");
+  const el = document.createElement("div");
+  el.className = "cutIn";
+  el.innerHTML = `
+    <div class="rarity">${unit.card.rarityLabel ?? unit.card.rarity ?? "ULTIMATE"}</div>
+    <h2>${action.name}</h2>
+    <p>${unit.name}</p>
+  `;
+  layer.appendChild(el);
+  setTimeout(() => el.remove(), 950);
+}
+
+function logBattle(message) {
+  if (!battle) return;
+  battle.logs.unshift(message);
+  battle.logs = battle.logs.slice(0, 40);
+  const log = document.getElementById("battleLog");
+  if (log) log.innerHTML = battle.logs.map(m => `・${m}`).join("<br>");
+}
+
+function toast(message) {
+  const el = document.getElementById("toast");
+  el.textContent = message;
+  el.classList.add("show");
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(() => el.classList.remove("show"), 2100);
+}
+
+init();
