@@ -46,6 +46,37 @@ function loadSave() {
   } catch {
     save = defaultSave();
   }
+
+  // 旧バージョンのセーブやカードID変更に対応する補正
+  const defaults = defaultSave();
+  save.playerLevel ??= defaults.playerLevel;
+  save.stamina ??= defaults.stamina;
+  save.gems ??= defaults.gems;
+  save.coins ??= defaults.coins;
+  save.ownedCards ??= {};
+  save.deck ??= defaults.deck;
+
+  // 旧ID front_r_001 を新ID front_sr_001 に移行
+  if (save.ownedCards.front_r_001 && !save.ownedCards.front_sr_001) {
+    save.ownedCards.front_sr_001 = save.ownedCards.front_r_001;
+  }
+
+  save.deck = save.deck.map(id => id === "front_r_001" ? "front_sr_001" : id);
+
+  // 存在しないカードIDが編成に入っていたら初期デッキに戻す
+  const validIds = new Set(cards.map(c => c.id));
+  if (save.deck.length !== 5 || save.deck.some(id => !validIds.has(id))) {
+    save.deck = defaults.deck;
+  }
+
+  // 所持データがない初期デッキカードを補完
+  defaults.deck.forEach(id => {
+    if (!save.ownedCards[id]) {
+      save.ownedCards[id] = { count: 1, level: 1, exp: 0, limitBreak: 0 };
+    }
+  });
+
+  saveGame();
 }
 
 function saveGame() {
@@ -99,8 +130,13 @@ function calcStats(card, owned) {
 }
 
 function makeAlly(cardId, i) {
-  const card = getCard(cardId);
-  const stats = calcStats(card, save.ownedCards[cardId]);
+  let card = getCard(cardId);
+  if (!card) {
+    console.warn("存在しないカードIDのため初期カードに差し替えます:", cardId);
+    card = getCard(defaultSave().deck[i]) || cards[0];
+    cardId = card.id;
+  }
+  const stats = calcStats(card, save.ownedCards[cardId] ?? { count: 1, level: 1, exp: 0, limitBreak: 0 });
   return {
     uid: "ally_" + i,
     side: "ally",
