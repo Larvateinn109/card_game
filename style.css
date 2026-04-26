@@ -376,3 +376,38 @@ button:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.28)}
   .sheetUnit .sprite{width:84px;height:100px}
   .sheetSprite{width:84px;height:100px}
 }
+
+
+/* v1.6.1 fixes */
+.sheetUnit .sprite{
+  animation:none !important;
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+}
+.sheetUnit .sdStand{
+  background:rgba(255,255,255,.14);
+}
+.sheetSprite{
+  width:100px;
+  height:116px;
+  background-repeat:no-repeat;
+  background-color:transparent;
+  image-rendering:-webkit-optimize-contrast;
+  image-rendering:crisp-edges;
+  filter:drop-shadow(0 8px 8px rgba(0,0,0,.30));
+  transform-origin:center bottom;
+  will-change:transform, background-position;
+}
+.sheetUnit.attack .sheetSprite{
+  animation:none;
+}
+.unit.dead{
+  display:none !important;
+}
+@media (max-width:760px){
+  .sheetSprite{
+    width:84px;
+    height:100px;
+  }
+}
