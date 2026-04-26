@@ -37,7 +37,7 @@ async function init() {
   renderHeader();
   initBattle();
   renderAll();
-  log("準備完了。開始を押してください。");
+  log("準備完了。敵HPを高めにしています。開始を押してください。");
 }
 
 function loadSave() {
@@ -163,14 +163,18 @@ function makeAlly(cardId, i) {
 function makeEnemy(i) {
   const names = ["敵A","敵B","敵C"];
   const positions = ["front","middle","back"];
+
+  // 挙動確認用にかなり硬め。長く殴り合えるようにする。
+  const enemyHp = 28000 + i * 9000;
+
   return {
     uid: "enemy_" + i,
     side: "enemy",
     name: names[i],
-    hp: 3000 + i * 600,
-    maxHp: 3000 + i * 600,
-    atk: 430 + i * 70,
-    def: 230 + i * 40,
+    hp: enemyHp,
+    maxHp: enemyHp,
+    atk: 520 + i * 90,
+    def: 330 + i * 70,
     spd: 450 + i * 35,
     luck: 120,
     tp: 0,
@@ -326,7 +330,7 @@ function impact(unit) {
       t.hp = Math.max(0, t.hp - dmg);
       unit.tp = Math.min(100, unit.tp + (action.tpGain ?? 0));
       t.tp = Math.min(100, t.tp + Math.min(18, Math.floor(dmg / t.maxHp * 70)));
-      showDamage(t.uid, dmg, false);
+      showDamage(t.uid, dmg, false, unit.side);
       showSlash(t.uid);
       flash(t.uid, "hit");
       if (t.hp <= 0) {
@@ -343,7 +347,7 @@ function impact(unit) {
       const amount = Math.floor(effective(unit,"atk") * (action.power ?? 1));
       t.hp = Math.min(t.maxHp, t.hp + amount);
       unit.tp = Math.min(100, unit.tp + (action.tpGain ?? 0));
-      showDamage(t.uid, amount, true);
+      showDamage(t.uid, amount, true, unit.side);
     });
   }
 
@@ -396,36 +400,49 @@ function getUnitPosition(unit, index, side) {
   const height = field ? field.clientHeight : 420;
 
   const pos = unit.card.position || "middle";
-  const laneY = {
-    front: height * 0.62,
-    middle: height * 0.50,
-    back: height * 0.38
-  };
-  const orderOffsets = side === "ally"
-    ? [0, 46, 92, 138, 184]
-    : [0, 46, 92, 138, 184];
 
-  if (side === "ally") {
-    const baseX = {
-      front: width * 0.34,
-      middle: width * 0.22,
-      back: width * 0.10
-    };
-    return {
-      x: baseX[pos] + (index % 2) * 12,
-      y: laneY[pos] + (index % 2) * 8
-    };
-  } else {
-    const baseX = {
-      front: width * 0.66,
-      middle: width * 0.78,
-      back: width * 0.88
-    };
-    return {
-      x: baseX[pos] - (index % 2) * 10,
-      y: laneY[pos] - (index % 2) * 8
-    };
-  }
+  // 位置が重ならないように、前衛・中衛・後衛ごとに基準点を分ける
+  // さらに同じ列のキャラは上下方向にもずらす。
+  const allySlots = [
+    { x: 0.34, y: 0.66 }, // 前衛1
+    { x: 0.28, y: 0.55 }, // 中衛1
+    { x: 0.19, y: 0.44 }, // 中衛/後衛1
+    { x: 0.12, y: 0.32 }, // 後衛1
+    { x: 0.22, y: 0.73 }  // 前衛/補助
+  ];
+
+  const enemySlots = [
+    { x: 0.66, y: 0.66 }, // 前衛
+    { x: 0.77, y: 0.50 }, // 中衛
+    { x: 0.88, y: 0.35 }  // 後衛
+  ];
+
+  const preferredByPosition = {
+    ally: {
+      front: [{ x: 0.34, y: 0.66 }, { x: 0.25, y: 0.74 }],
+      middle: [{ x: 0.25, y: 0.54 }, { x: 0.18, y: 0.63 }],
+      back: [{ x: 0.13, y: 0.38 }, { x: 0.20, y: 0.28 }]
+    },
+    enemy: {
+      front: [{ x: 0.66, y: 0.66 }],
+      middle: [{ x: 0.77, y: 0.51 }],
+      back: [{ x: 0.88, y: 0.36 }]
+    }
+  };
+
+  const sameSideUnits = side === "ally" ? battle.allies : battle.enemies;
+  const samePositionIndex = sameSideUnits
+    .slice(0, index + 1)
+    .filter(u => (u.card.position || "middle") === pos).length - 1;
+
+  const table = preferredByPosition[side][pos] || [];
+  const fallback = side === "ally" ? allySlots[index % allySlots.length] : enemySlots[index % enemySlots.length];
+  const slot = table[samePositionIndex] || fallback;
+
+  return {
+    x: width * slot.x,
+    y: height * slot.y
+  };
 }
 
 function renderField() {
@@ -497,16 +514,35 @@ function center(uid) {
   return { x: ur.left - fr.left + ur.width / 2, y: ur.top - fr.top + ur.height / 2 };
 }
 
-function showDamage(uid, value, heal=false) {
+function showDamage(uid, value, heal=false, sourceSide="ally") {
   const layer = document.getElementById("damageLayer");
   const p = center(uid);
   const el = document.createElement("div");
-  el.className = "dmg" + (heal ? " heal" : "");
-  el.style.left = `${p.x - 24}px`;
-  el.style.top = `${p.y - 52}px`;
-  el.textContent = heal ? `+${value}` : value;
+
+  // allyが敵に与えたダメージ = 与ダメ、enemyが味方に与えたダメージ = 被ダメ
+  const target = allUnits().find(u => u.uid === uid);
+  const isTargetEnemy = target?.side === "enemy";
+  const isTargetAlly = target?.side === "ally";
+
+  let label = "";
+  let kind = "";
+  if (heal) {
+    label = "回復";
+    kind = "heal";
+  } else if (sourceSide === "ally" && isTargetEnemy) {
+    label = "与ダメ";
+    kind = "given";
+  } else if (sourceSide === "enemy" && isTargetAlly) {
+    label = "被ダメ";
+    kind = "taken";
+  }
+
+  el.className = `dmg ${kind}`;
+  el.style.left = `${p.x - 34}px`;
+  el.style.top = `${p.y - 58}px`;
+  el.innerHTML = `${label ? `<span>${label}</span>` : ""}<b>${heal ? "+" : ""}${value}</b>`;
   layer.appendChild(el);
-  setTimeout(() => el.remove(), 850);
+  setTimeout(() => el.remove(), 1050);
 }
 
 function showSlash(uid) {
