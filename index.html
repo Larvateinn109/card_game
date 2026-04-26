@@ -1,19 +1,19 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Summer Card Battle</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Summer Card Battle v1.2</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="app">
   <header class="topbar">
     <div>
-      <div class="player">Lv.<span id="playerLevel">1</span> 先生</div>
-      <div class="stamina">ST <span id="stamina">100</span>/100</div>
+      <b>Lv.<span id="playerLevel">1</span> 先生</b>
+      <small>ST <span id="stamina">100</span>/100</small>
     </div>
-    <div class="currency">
+    <div class="money">
       <span>💎 <b id="gems">3000</b></span>
       <span>🪙 <b id="coins">10000</b></span>
     </div>
@@ -21,25 +21,14 @@
 
   <main>
     <section id="homeScreen" class="screen active">
-      <div class="hero">
-        <div class="heroText">
-          <p class="label">BATTLE TEST VERSION</p>
-          <h1>Summer Card Battle</h1>
-          <p>行動ループ、TP、必殺技キャンセルを実装したテスト版です。</p>
-          <button data-nav="battleScreen">バトル開始</button>
-        </div>
+      <div class="homeHero">
+        <h1>Summer Card Battle</h1>
+        <p>プリコネ風バトルのテスト版です。</p>
+        <button data-nav="battleScreen">バトル画面へ</button>
       </div>
-
       <div class="panel">
-        <h2>今回入ったもの</h2>
-        <ul>
-          <li>5人編成のプリコネ風バトル</li>
-          <li>通常攻撃・スキル1・スキル2の行動ループ</li>
-          <li>キャラアイコンタップで必殺技</li>
-          <li>行動中キャンセル → 必殺技後に次のループ行動へ</li>
-          <li>TPゲージ、HPゲージ、ダメージ表示</li>
-          <li>被り凸・レベル込みのステータス計算</li>
-        </ul>
+        <h2>実装済み</h2>
+        <p>行動ループ / TP / アイコンタップ必殺技 / 行動キャンセル / 次行動再開</p>
       </div>
     </section>
 
@@ -49,30 +38,34 @@
           <b>クエスト：戦闘テスト</b>
           <p id="battleStateText">待機中</p>
         </div>
-        <div class="battleButtons">
+        <div>
           <button id="startBattleBtn">開始</button>
           <button id="resetBattleBtn">リセット</button>
         </div>
       </div>
 
       <div id="battleField" class="battleField">
-        <div id="enemyLine" class="unitLine enemyLine"></div>
-        <div id="effectLayer" class="effectLayer"></div>
-        <div id="allyLine" class="unitLine allyLine"></div>
+        <div class="fieldLabel enemyLabel">ENEMY</div>
+        <div id="enemyUnits" class="enemyUnits"></div>
+
+        <div id="damageLayer" class="damageLayer"></div>
+
+        <div class="fieldLabel allyLabel">ALLY</div>
+        <div id="allyUnits" class="allyUnits"></div>
       </div>
 
       <div class="ultimatePanel">
-        <div class="panelTitle">必殺技：TP100でアイコンをタップ</div>
+        <div class="panelCaption">必殺技：TP100でアイコンをタップ</div>
         <div id="ultimateIcons" class="ultimateIcons"></div>
       </div>
 
-      <div class="battleLog" id="battleLog"></div>
+      <div class="battleLog" id="battleLog">準備中...</div>
     </section>
 
     <section id="cardsScreen" class="screen">
       <div class="panel">
-        <h2>カード一覧</h2>
-        <div id="cardList" class="cardList"></div>
+        <h2>カード</h2>
+        <div id="cardList"></div>
       </div>
     </section>
   </main>
