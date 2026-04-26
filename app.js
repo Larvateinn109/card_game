@@ -1,7 +1,6 @@
-const SAVE_KEY = "summer_card_battle_v12_save";
+const SAVE_KEY = "summer_card_battle_v13_landscape";
 const TICK_MS = 100;
-
-const EMBEDDED_CARDS = [{"id": "yuki_lr_001", "name": "水上 由岐", "rarity": "LR", "attribute": "記憶", "baseHp": 5200, "baseAtk": 980, "baseDef": 420, "baseSpd": 720, "baseLuck": 430, "growHp": 280, "growAtk": 64, "growDef": 28, "growSpd": 34, "growLuck": 20, "dupeBonusRate": 0.035, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "踏み込み掌打", "type": "attack", "target": "front_enemy", "power": 1.65, "tpGain": 18, "duration": 1300}, "skill2": {"name": "旋風蹴り", "type": "attack", "target": "enemy_area", "power": 1.25, "tpGain": 20, "duration": 1500}, "ultimate": {"name": "終ノ空・崩拳連撃", "type": "attack", "target": "enemy_all", "power": 2.8, "tpCost": 100, "duration": 2400}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"]}, {"id": "kamome_ur_001", "name": "久島 鴎", "rarity": "UR", "attribute": "空", "baseHp": 4300, "baseAtk": 820, "baseDef": 380, "baseSpd": 760, "baseLuck": 620, "growHp": 230, "growAtk": 52, "growDef": 24, "growSpd": 38, "growLuck": 30, "dupeBonusRate": 0.03, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "リーフストーン", "type": "attack", "target": "front_enemy", "power": 1.45, "tpGain": 18, "duration": 1250}, "skill2": {"name": "夏風の加護", "type": "buff", "target": "ally_all", "stat": "spd", "value": 0.18, "duration": 1300, "buffDuration": 7000, "tpGain": 20}, "ultimate": {"name": "静寂の羽ばたき・極", "type": "attack", "target": "enemy_all", "power": 2.35, "tpCost": 100, "duration": 2400}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"]}, {"id": "front_sr_001", "name": "前衛アタッカー", "rarity": "SR", "attribute": "火", "baseHp": 3900, "baseAtk": 720, "baseDef": 360, "baseSpd": 640, "baseLuck": 300, "growHp": 200, "growAtk": 42, "growDef": 20, "growSpd": 26, "growLuck": 14, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "強打", "type": "attack", "target": "front_enemy", "power": 1.35, "tpGain": 16, "duration": 1200}, "skill2": {"name": "気合", "type": "buff", "target": "self", "stat": "atk", "value": 0.18, "duration": 1200, "buffDuration": 7000, "tpGain": 18}, "ultimate": {"name": "渾身連打", "type": "attack", "target": "front_enemy", "power": 3.1, "tpCost": 100, "duration": 2300}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"]}, {"id": "healer_sr_001", "name": "支援ヒーラー", "rarity": "SR", "attribute": "水", "baseHp": 3400, "baseAtk": 520, "baseDef": 300, "baseSpd": 600, "baseLuck": 410, "growHp": 170, "growAtk": 28, "growDef": 18, "growSpd": 24, "growLuck": 20, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 0.85, "tpGain": 12, "duration": 900}, "skill1": {"name": "応急手当", "type": "heal", "target": "lowest_ally", "power": 1.3, "tpGain": 18, "duration": 1200}, "skill2": {"name": "防御支援", "type": "buff", "target": "ally_all", "stat": "def", "value": 0.16, "duration": 1300, "buffDuration": 7000, "tpGain": 18}, "ultimate": {"name": "全体回復", "type": "heal", "target": "ally_all", "power": 1.8, "tpCost": 100, "duration": 2300}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"]}, {"id": "mage_sr_001", "name": "後衛メイジ", "rarity": "SR", "attribute": "星", "baseHp": 3100, "baseAtk": 840, "baseDef": 260, "baseSpd": 580, "baseLuck": 520, "growHp": 150, "growAtk": 50, "growDef": 14, "growSpd": 22, "growLuck": 24, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 0.95, "tpGain": 12, "duration": 900}, "skill1": {"name": "星弾", "type": "attack", "target": "front_enemy", "power": 1.55, "tpGain": 18, "duration": 1250}, "skill2": {"name": "小爆発", "type": "attack", "target": "enemy_area", "power": 1.15, "tpGain": 20, "duration": 1450}, "ultimate": {"name": "星降る夜", "type": "attack", "target": "enemy_all", "power": 2.45, "tpCost": 100, "duration": 2500}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"]}];
+const EMBEDDED_CARDS = [{"id": "yuki_lr_001", "name": "水上 由岐", "rarity": "LR", "position": "front", "attribute": "記憶", "baseHp": 5200, "baseAtk": 980, "baseDef": 420, "baseSpd": 720, "baseLuck": 430, "growHp": 280, "growAtk": 64, "growDef": 28, "growSpd": 34, "growLuck": 20, "dupeBonusRate": 0.035, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "踏み込み掌打", "type": "attack", "target": "front_enemy", "power": 1.65, "tpGain": 18, "duration": 1300}, "skill2": {"name": "旋風蹴り", "type": "attack", "target": "enemy_area", "power": 1.25, "tpGain": 20, "duration": 1500}, "ultimate": {"name": "終ノ空・崩拳連撃", "type": "attack", "target": "enemy_all", "power": 2.8, "tpCost": 100, "duration": 2400}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"]}, {"id": "kamome_ur_001", "name": "久島 鴎", "rarity": "UR", "position": "middle", "attribute": "空", "baseHp": 4300, "baseAtk": 820, "baseDef": 380, "baseSpd": 760, "baseLuck": 620, "growHp": 230, "growAtk": 52, "growDef": 24, "growSpd": 38, "growLuck": 30, "dupeBonusRate": 0.03, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "リーフストーン", "type": "attack", "target": "front_enemy", "power": 1.45, "tpGain": 18, "duration": 1250}, "skill2": {"name": "夏風の加護", "type": "buff", "target": "ally_all", "stat": "spd", "value": 0.18, "duration": 1300, "buffDuration": 7000, "tpGain": 20}, "ultimate": {"name": "静寂の羽ばたき・極", "type": "attack", "target": "enemy_all", "power": 2.35, "tpCost": 100, "duration": 2400}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"]}, {"id": "front_sr_001", "name": "前衛アタッカー", "rarity": "SR", "position": "front", "attribute": "火", "baseHp": 3900, "baseAtk": 720, "baseDef": 360, "baseSpd": 640, "baseLuck": 300, "growHp": 200, "growAtk": 42, "growDef": 20, "growSpd": 26, "growLuck": 14, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 1.0, "tpGain": 12, "duration": 900}, "skill1": {"name": "強打", "type": "attack", "target": "front_enemy", "power": 1.35, "tpGain": 16, "duration": 1200}, "skill2": {"name": "気合", "type": "buff", "target": "self", "stat": "atk", "value": 0.18, "duration": 1200, "buffDuration": 7000, "tpGain": 18}, "ultimate": {"name": "渾身連打", "type": "attack", "target": "front_enemy", "power": 3.1, "tpCost": 100, "duration": 2300}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"]}, {"id": "healer_sr_001", "name": "支援ヒーラー", "rarity": "SR", "position": "back", "attribute": "水", "baseHp": 3400, "baseAtk": 520, "baseDef": 300, "baseSpd": 600, "baseLuck": 410, "growHp": 170, "growAtk": 28, "growDef": 18, "growSpd": 24, "growLuck": 20, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 0.85, "tpGain": 12, "duration": 900}, "skill1": {"name": "応急手当", "type": "heal", "target": "lowest_ally", "power": 1.3, "tpGain": 18, "duration": 1200}, "skill2": {"name": "防御支援", "type": "buff", "target": "ally_all", "stat": "def", "value": 0.16, "duration": 1300, "buffDuration": 7000, "tpGain": 18}, "ultimate": {"name": "全体回復", "type": "heal", "target": "ally_all", "power": 1.8, "tpCost": 100, "duration": 2300}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"]}, {"id": "mage_sr_001", "name": "後衛メイジ", "rarity": "SR", "position": "back", "attribute": "星", "baseHp": 3100, "baseAtk": 840, "baseDef": 260, "baseSpd": 580, "baseLuck": 520, "growHp": 150, "growAtk": 50, "growDef": 14, "growSpd": 22, "growLuck": 24, "dupeBonusRate": 0.025, "normalAttack": {"name": "通常攻撃", "type": "attack", "target": "front_enemy", "power": 0.95, "tpGain": 12, "duration": 900}, "skill1": {"name": "星弾", "type": "attack", "target": "front_enemy", "power": 1.55, "tpGain": 18, "duration": 1250}, "skill2": {"name": "小爆発", "type": "attack", "target": "enemy_area", "power": 1.15, "tpGain": 20, "duration": 1450}, "ultimate": {"name": "星降る夜", "type": "attack", "target": "enemy_all", "power": 2.45, "tpCost": 100, "duration": 2500}, "actionLoop": ["normalAttack", "skill1", "normalAttack", "skill2", "normalAttack"]}];
 
 let cards = [];
 let save = null;
@@ -33,7 +32,6 @@ async function init() {
   } catch (e) {
     cards = EMBEDDED_CARDS;
   }
-
   loadSave();
   bind();
   renderHeader();
@@ -91,8 +89,7 @@ function calcStats(card, owned) {
   const limitBreak = owned?.limitBreak ?? Math.max(0, count - 1);
   const mul = 1 + (card.dupeBonusRate ?? 0.03) * Math.sqrt(limitBreak);
   return {
-    level,
-    limitBreak,
+    level, limitBreak,
     maxHp: Math.floor((card.baseHp + card.growHp * (level - 1)) * mul),
     atk: Math.floor((card.baseAtk + card.growAtk * (level - 1)) * mul),
     def: Math.floor((card.baseDef + card.growDef * (level - 1)) * mul),
@@ -123,13 +120,13 @@ function makeAlly(cardId, i) {
     impacted: false,
     state: "idle",
     alive: true,
-    buffs: [],
-    status: []
+    buffs: []
   };
 }
 
 function makeEnemy(i) {
-  const names = ["敵A", "敵B", "敵C"];
+  const names = ["敵A","敵B","敵C"];
+  const positions = ["front","middle","back"];
   return {
     uid: "enemy_" + i,
     side: "enemy",
@@ -149,9 +146,10 @@ function makeEnemy(i) {
     state: "idle",
     alive: true,
     buffs: [],
-    status: [],
     card: {
-      actionLoop: ["normalAttack", "normalAttack", "skill1", "normalAttack"],
+      rarity: "ENEMY",
+      position: positions[i] || "middle",
+      actionLoop: ["normalAttack","normalAttack","skill1","normalAttack"],
       normalAttack: { name: "攻撃", type: "attack", target: "front_enemy", power: 0.85, duration: 1050, tpGain: 0 },
       skill1: { name: "強攻撃", type: "attack", target: "front_enemy", power: 1.15, duration: 1300, tpGain: 0 }
     }
@@ -168,6 +166,10 @@ function initBattle() {
   };
 }
 
+function allUnits() {
+  return [...battle.allies, ...battle.enemies];
+}
+
 function startBattle() {
   if (!battle) initBattle();
   if (battle.running) return toast("戦闘中です");
@@ -181,9 +183,9 @@ function startBattle() {
 }
 
 function stopBattle() {
-  battle.running = false;
-  clearInterval(timer);
+  if (timer) clearInterval(timer);
   timer = null;
+  if (battle) battle.running = false;
   document.getElementById("battleStateText").textContent = "停止中";
 }
 
@@ -205,24 +207,19 @@ function tick() {
 
   units
     .filter(u => !u.action)
-    .sort((a, b) => b.spd - a.spd)
+    .sort((a,b) => effective(b,"spd") - effective(a,"spd"))
     .forEach(u => startNextAction(u));
 
   checkEnd();
   renderAll();
 }
 
-function allUnits() {
-  return [...battle.allies, ...battle.enemies];
-}
-
 function startNextAction(unit) {
   if (!unit.alive) return;
   const loop = unit.card.actionLoop;
   const key = loop[unit.loopIndex];
-  unit.loopIndex = (unit.loopIndex + 1) % loop.length; // 開始時に次へ進める
-  const action = unit.card[key];
-  startAction(unit, key, action, false);
+  unit.loopIndex = (unit.loopIndex + 1) % loop.length;
+  startAction(unit, key, unit.card[key], false);
 }
 
 function startAction(unit, key, action, ultimate) {
@@ -257,8 +254,7 @@ function activateUltimate(uid) {
   if (!unit || !unit.alive) return;
   if (unit.tp < 100) return toast("TPが足りません");
   if (unit.state === "ultimate") return;
-
-  unit.action = null; // 現在行動をキャンセル
+  unit.action = null; // 現在行動キャンセル
   unit.tp = 0;
   startAction(unit, "ultimate", unit.card.ultimate, true);
   renderAll();
@@ -270,8 +266,13 @@ function targetList(unit, targetType) {
   const aliveEnemies = enemies.filter(x => x.alive);
   const aliveAllies = allies.filter(x => x.alive);
 
-  if (targetType === "front_enemy") return aliveEnemies.slice(0, 1);
-  if (targetType === "enemy_area") return aliveEnemies.slice(0, 2);
+  if (targetType === "front_enemy") {
+    // 前衛優先
+    const front = aliveEnemies.filter(x => (x.card.position || "middle") === "front");
+    if (front.length) return [front[0]];
+    return aliveEnemies.slice(0,1);
+  }
+  if (targetType === "enemy_area") return aliveEnemies.slice(0,2);
   if (targetType === "enemy_all") return aliveEnemies;
   if (targetType === "ally_all") return aliveAllies;
   if (targetType === "self") return [unit];
@@ -284,13 +285,12 @@ function impact(unit) {
   if (!action) return;
 
   if (action.type === "attack") {
-    const targets = targetList(unit, action.target);
-    targets.forEach(t => {
+    targetList(unit, action.target).forEach(t => {
       const dmg = damage(unit, t, action.power ?? 1);
       t.hp = Math.max(0, t.hp - dmg);
       unit.tp = Math.min(100, unit.tp + (action.tpGain ?? 0));
       t.tp = Math.min(100, t.tp + Math.min(18, Math.floor(dmg / t.maxHp * 70)));
-      showDamage(t.uid, dmg);
+      showDamage(t.uid, dmg, false);
       showSlash(t.uid);
       flash(t.uid, "hit");
       if (t.hp <= 0) {
@@ -304,10 +304,10 @@ function impact(unit) {
 
   if (action.type === "heal") {
     targetList(unit, action.target).forEach(t => {
-      const amount = Math.floor(unit.atk * (action.power ?? 1));
+      const amount = Math.floor(effective(unit,"atk") * (action.power ?? 1));
       t.hp = Math.min(t.maxHp, t.hp + amount);
       unit.tp = Math.min(100, unit.tp + (action.tpGain ?? 0));
-      showDamage(t.uid, "+" + amount, true);
+      showDamage(t.uid, amount, true);
     });
   }
 
@@ -328,18 +328,15 @@ function effective(unit, stat) {
 }
 
 function damage(a, d, power) {
-  const raw = Math.max(1, effective(a, "atk") * power - effective(d, "def") * .38);
-  const crit = Math.random() < Math.min(.5, .05 + effective(a, "luck") / 3000);
+  const raw = Math.max(1, effective(a,"atk") * power - effective(d,"def") * .38);
+  const crit = Math.random() < Math.min(.5, .05 + effective(a,"luck") / 3000);
   return Math.floor(raw * (.9 + Math.random() * .2) * (crit ? 1.8 : 1));
 }
 
 function checkEnd() {
   if (!battle.enemies.some(e => e.alive)) {
     log("勝利！ 報酬：💎50 🪙500");
-    save.gems += 50;
-    save.coins += 500;
-    saveGame();
-    renderHeader();
+    save.gems += 50; save.coins += 500; saveGame(); renderHeader();
     stopBattle();
     document.getElementById("battleStateText").textContent = "勝利";
     toast("勝利！");
@@ -352,36 +349,81 @@ function checkEnd() {
 }
 
 function renderAll() {
-  renderUnits("allyUnits", battle.allies);
-  renderUnits("enemyUnits", battle.enemies);
+  renderField();
   renderUltimate();
   renderCards();
 }
 
-function renderUnits(id, units) {
-  const box = document.getElementById(id);
-  if (!box) return;
-  box.innerHTML = "";
-  units.forEach(u => {
-    const hp = Math.max(0, Math.floor(u.hp / u.maxHp * 100));
-    const tp = Math.max(0, Math.floor(u.tp));
-    const div = document.createElement("div");
-    div.className = `unit ${u.side} ${u.alive ? "" : "dead"} ${u.state === "ultimate" ? "ultimate" : ""}`;
-    div.id = u.uid;
-    div.innerHTML = `
-      <div class="unitName">${u.name}</div>
-      <div class="sprite">${u.name.slice(0,1)}</div>
-      <div class="shadow"></div>
-      <div class="hpBar"><div class="hpFill" style="width:${hp}%"></div></div>
-      <div class="tpBarMini"><div class="tpFillMini" style="width:${tp}%"></div></div>
-    `;
-    box.appendChild(div);
-  });
+function getUnitPosition(unit, index, side) {
+  const field = document.getElementById("battleField");
+  const width = field ? field.clientWidth : 800;
+  const height = field ? field.clientHeight : 420;
+
+  const pos = unit.card.position || "middle";
+  const laneY = {
+    front: height * 0.62,
+    middle: height * 0.50,
+    back: height * 0.38
+  };
+  const orderOffsets = side === "ally"
+    ? [0, 46, 92, 138, 184]
+    : [0, 46, 92, 138, 184];
+
+  if (side === "ally") {
+    const baseX = {
+      front: width * 0.34,
+      middle: width * 0.22,
+      back: width * 0.10
+    };
+    return {
+      x: baseX[pos] + (index % 2) * 12,
+      y: laneY[pos] + (index % 2) * 8
+    };
+  } else {
+    const baseX = {
+      front: width * 0.66,
+      middle: width * 0.78,
+      back: width * 0.88
+    };
+    return {
+      x: baseX[pos] - (index % 2) * 10,
+      y: laneY[pos] - (index % 2) * 8
+    };
+  }
+}
+
+function renderField() {
+  const field = document.getElementById("battleField");
+  const oldUnits = field.querySelectorAll(".unit");
+  oldUnits.forEach(el => el.remove());
+
+  battle.allies.forEach((u, i) => field.appendChild(createUnitEl(u, i, "ally")));
+  battle.enemies.forEach((u, i) => field.appendChild(createUnitEl(u, i, "enemy")));
+}
+
+function createUnitEl(u, i, side) {
+  const pos = getUnitPosition(u, i, side);
+  const hp = Math.max(0, Math.floor(u.hp / u.maxHp * 100));
+  const tp = Math.max(0, Math.floor(u.tp));
+
+  const div = document.createElement("div");
+  div.className = `unit ${side} ${u.alive ? "" : "dead"} ${u.state === "ultimate" ? "ultimate" : ""}`;
+  if (u.state === "attack") div.classList.add("attack");
+  div.id = u.uid;
+  div.style.left = `${pos.x - 42}px`;
+  div.style.top = `${pos.y - 60}px`;
+  div.innerHTML = `
+    <div class="unitName">${u.name}</div>
+    <div class="sprite">${u.name.slice(0,1)}</div>
+    <div class="shadow"></div>
+    <div class="hpBar"><div class="hpFill" style="width:${hp}%"></div></div>
+    <div class="tpBarMini"><div class="tpFillMini" style="width:${tp}%"></div></div>
+  `;
+  return div;
 }
 
 function renderUltimate() {
   const box = document.getElementById("ultimateIcons");
-  if (!box) return;
   box.innerHTML = "";
   battle.allies.forEach(u => {
     const btn = document.createElement("button");
@@ -402,10 +444,10 @@ function renderCards() {
   box.innerHTML = "";
   cards.forEach(c => {
     const owned = save.ownedCards[c.id];
-    const stats = owned ? calcStats(c, owned) : null;
+    const s = owned ? calcStats(c, owned) : null;
     const row = document.createElement("div");
     row.className = "cardRow";
-    row.innerHTML = `<b>[${c.rarity}] ${c.name}</b><br><small>${owned ? `Lv.${stats.level} +${stats.limitBreak}凸 / HP ${stats.maxHp} ATK ${stats.atk}` : "未所持"}</small>`;
+    row.innerHTML = `<b>[${c.rarity}] ${c.name}</b><br><small>${c.position || "-"} / ${owned ? `Lv.${s.level} +${s.limitBreak}凸 / HP ${s.maxHp} ATK ${s.atk}` : "未所持"}</small>`;
     box.appendChild(row);
   });
 }
@@ -413,22 +455,22 @@ function renderCards() {
 function center(uid) {
   const unit = document.getElementById(uid);
   const field = document.getElementById("battleField");
-  if (!unit || !field) return {x:250,y:220};
+  if (!unit || !field) return { x: field.clientWidth / 2, y: field.clientHeight / 2 };
   const ur = unit.getBoundingClientRect();
   const fr = field.getBoundingClientRect();
-  return {x: ur.left - fr.left + ur.width/2, y: ur.top - fr.top + ur.height/2};
+  return { x: ur.left - fr.left + ur.width / 2, y: ur.top - fr.top + ur.height / 2 };
 }
 
-function showDamage(uid, text, heal=false) {
+function showDamage(uid, value, heal=false) {
   const layer = document.getElementById("damageLayer");
   const p = center(uid);
   const el = document.createElement("div");
   el.className = "dmg" + (heal ? " heal" : "");
-  el.style.left = `${p.x-24}px`;
-  el.style.top = `${p.y-55}px`;
-  el.textContent = text;
+  el.style.left = `${p.x - 24}px`;
+  el.style.top = `${p.y - 52}px`;
+  el.textContent = heal ? `+${value}` : value;
   layer.appendChild(el);
-  setTimeout(()=>el.remove(),850);
+  setTimeout(() => el.remove(), 850);
 }
 
 function showSlash(uid) {
@@ -436,10 +478,10 @@ function showSlash(uid) {
   const p = center(uid);
   const el = document.createElement("div");
   el.className = "slash";
-  el.style.left = `${p.x-52}px`;
-  el.style.top = `${p.y-18}px`;
+  el.style.left = `${p.x - 52}px`;
+  el.style.top = `${p.y - 12}px`;
   layer.appendChild(el);
-  setTimeout(()=>el.remove(),420);
+  setTimeout(() => el.remove(), 420);
 }
 
 function showCutin(unit, action) {
@@ -448,20 +490,20 @@ function showCutin(unit, action) {
   el.className = "cutin";
   el.innerHTML = `<b>${unit.card.rarity ?? "ULTIMATE"}</b><h2>${action.name}</h2><p>${unit.name}</p>`;
   layer.appendChild(el);
-  setTimeout(()=>el.remove(),950);
+  setTimeout(() => el.remove(), 950);
 }
 
 function flash(uid, cls) {
   const el = document.getElementById(uid);
   if (!el) return;
   el.classList.add(cls);
-  setTimeout(()=>el.classList.remove(cls), cls === "ultimate" ? 800 : 330);
+  setTimeout(() => el.classList.remove(cls), cls === "ultimate" ? 800 : 320);
 }
 
 function log(msg) {
   if (!battle) return;
   battle.logs.unshift(msg);
-  battle.logs = battle.logs.slice(0,40);
+  battle.logs = battle.logs.slice(0, 50);
   const box = document.getElementById("battleLog");
   if (box) box.innerHTML = battle.logs.map(x => "・" + x).join("<br>");
 }
@@ -471,7 +513,11 @@ function toast(msg) {
   t.textContent = msg;
   t.classList.add("show");
   clearTimeout(window.__toast);
-  window.__toast = setTimeout(()=>t.classList.remove("show"),2000);
+  window.__toast = setTimeout(() => t.classList.remove("show"), 2000);
 }
+
+window.addEventListener("resize", () => {
+  if (document.getElementById("battleScreen").classList.contains("active")) renderAll();
+});
 
 init();

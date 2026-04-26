@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Summer Card Battle v1.2</title>
+<title>Summer Card Battle v1.3 Landscape</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="app">
   <header class="topbar">
-    <div>
+    <div class="statusLeft">
       <b>Lv.<span id="playerLevel">1</span> 先生</b>
       <small>ST <span id="stamina">100</span>/100</small>
     </div>
-    <div class="money">
+    <div class="statusRight">
       <span>💎 <b id="gems">3000</b></span>
       <span>🪙 <b id="coins">10000</b></span>
     </div>
@@ -22,50 +22,54 @@
   <main>
     <section id="homeScreen" class="screen active">
       <div class="homeHero">
-        <h1>Summer Card Battle</h1>
-        <p>プリコネ風バトルのテスト版です。</p>
-        <button data-nav="battleScreen">バトル画面へ</button>
-      </div>
-      <div class="panel">
-        <h2>実装済み</h2>
-        <p>行動ループ / TP / アイコンタップ必殺技 / 行動キャンセル / 次行動再開</p>
+        <div>
+          <div class="label">LANDSCAPE BATTLE TEST</div>
+          <h1>Summer Card Battle</h1>
+          <p>スマホ横持ち前提 / プリコネ風左右配置版です。</p>
+          <button data-nav="battleScreen">バトルへ</button>
+        </div>
       </div>
     </section>
 
     <section id="battleScreen" class="screen">
-      <div class="battleHeader">
-        <div>
-          <b>クエスト：戦闘テスト</b>
-          <p id="battleStateText">待機中</p>
+      <div class="battleLandscape">
+        <div class="battleStageWrap">
+          <div class="battleHeaderCompact">
+            <div>
+              <b>クエスト：戦闘テスト</b>
+              <p id="battleStateText">待機中</p>
+            </div>
+            <div class="headerButtons">
+              <button id="startBattleBtn">開始</button>
+              <button id="resetBattleBtn">リセット</button>
+            </div>
+          </div>
+
+          <div id="battleField" class="battleField">
+            <div class="fieldTag allyTag">ALLY</div>
+            <div class="fieldTag enemyTag">ENEMY</div>
+            <div id="damageLayer" class="damageLayer"></div>
+          </div>
         </div>
-        <div>
-          <button id="startBattleBtn">開始</button>
-          <button id="resetBattleBtn">リセット</button>
-        </div>
+
+        <aside class="battleSidebar">
+          <div class="sidebarPanel">
+            <div class="panelCaption">必殺技：TP100でタップ</div>
+            <div id="ultimateIcons" class="ultimateIcons"></div>
+          </div>
+
+          <div class="sidebarPanel logPanel">
+            <div class="panelCaption">バトルログ</div>
+            <div class="battleLog" id="battleLog">準備中...</div>
+          </div>
+        </aside>
       </div>
-
-      <div id="battleField" class="battleField">
-        <div class="fieldLabel enemyLabel">ENEMY</div>
-        <div id="enemyUnits" class="enemyUnits"></div>
-
-        <div id="damageLayer" class="damageLayer"></div>
-
-        <div class="fieldLabel allyLabel">ALLY</div>
-        <div id="allyUnits" class="allyUnits"></div>
-      </div>
-
-      <div class="ultimatePanel">
-        <div class="panelCaption">必殺技：TP100でアイコンをタップ</div>
-        <div id="ultimateIcons" class="ultimateIcons"></div>
-      </div>
-
-      <div class="battleLog" id="battleLog">準備中...</div>
     </section>
 
     <section id="cardsScreen" class="screen">
-      <div class="panel">
-        <h2>カード</h2>
-        <div id="cardList"></div>
+      <div class="sidebarPanel">
+        <div class="panelCaption">カード一覧</div>
+        <div id="cardList" class="cardList"></div>
       </div>
     </section>
   </main>
